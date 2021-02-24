@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/aishtiaq7/VibeCheck-discord-bot/issues"
   },
-  "homepage": "https://github.com/aishtiaq7/VibeCheck-discord-bot#readme"
+  "homepage": "https://github.com/aishtiaq7/VibeCheck-discord-bot#readme",
+  "dependencies": {
+    "discord.js": "^12.5.1"
+  }
 }
