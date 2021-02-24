@@ -12,8 +12,18 @@ client.login(token); // starts the bot up
 
 
 client.on("message", message => { // runs whenever a message is sent
+
+	//
     if (message.content === "Vibecheck me") { // checks if the message says "?random"
-        const vibeCheckString = "VibeCheck yoo"; // generates a random number
+
+		//Vibechecks wither username 
+		const username = message.author.username;
+        const vibeCheckString = "VibeCheck " + username; // generates a random number
         message.channel.send(vibeCheckString); // sends a message to the channel with the number
+
+		
     }
+
+
+
 });
