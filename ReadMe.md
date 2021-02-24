@@ -5,7 +5,7 @@ Features:
 -Each responds vibeCheck within a time specified time
     -if someone doesnt respond, he missed his vibeCheck ( keep score)
 
-Markup :* Bullet 1 
-            *Bullet 2
-                * Sub-nested bullet etc
-        * Bullet list item 2
+* Bullet 1 
+    *Bullet 2
+        * Sub-nested bullet etc
+* Bullet list item 2
