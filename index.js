@@ -11,18 +11,35 @@ client.once("ready", () => { // prints "Ready!" to the console once the bot is o
 client.login(token); // starts the bot up
 
 
+
+
+
+//******************************** MESSAGES ********************************
 client.on("message", message => { // runs whenever a message is sent
 
-	//
-    if (message.content === "Vibecheck me") { // checks if the message says "?random"
+	//message.content
+	var textMessage = message.content;
+	textMessage = textMessage.toLowerCase();
+
+	
+    if (textMessage === "Vibecheck me".toLocaleLowerCase() ) { 
 
 		//Vibechecks wither username 
 		const username = message.author.username;
-        const vibeCheckString = "VibeCheck " + username; // generates a random number
+        const vibeCheckString = "VibeChecked " + username; // generates a random number
         message.channel.send(vibeCheckString); // sends a message to the channel with the number
 
-		
     }
+
+	if ( textMessage === "Vibecheck bol".toLocaleLowerCase() ){
+		const string = "Vibecheck khankirpola " + message.author.username;
+		message.channel.send(string);
+	}
+
+	if (message.content === 'what is my avatar') {
+		// Send the user's avatar URL
+		message.reply(message.author.displayAvatarURL());
+	  }
 
 
 
