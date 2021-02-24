@@ -1,0 +1,19 @@
+{
+  "name": "vibecheck_discord_bot",
+  "version": "1.0.0",
+  "description": "* Random timer vibe check \r * Each responds vibeCheck within a time specified time\r         * if someone doesnt respond, he missed his vibeCheck (keep score)\r * new features..",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aishtiaq7/VibeCheck-discord-bot.git"
+  },
+  "author": "Awshaf Ishtiaque",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aishtiaq7/VibeCheck-discord-bot/issues"
+  },
+  "homepage": "https://github.com/aishtiaq7/VibeCheck-discord-bot#readme"
+}
