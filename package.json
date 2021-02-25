@@ -19,5 +19,9 @@
   "homepage": "https://github.com/aishtiaq7/VibeCheck-discord-bot#readme",
   "dependencies": {
     "discord.js": "^12.5.1"
+  },
+  "engines": {
+    "node": "12.18.3",
+    "npm": "6.14.6"
   }
 }
