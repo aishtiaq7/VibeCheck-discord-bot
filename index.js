@@ -40,37 +40,29 @@ client.on("message", message => { // runs whenever a message is sent
 		message.channel.send(string);
 	}
 
-	if (message.content === 'what is my avatar') {
-		// Send the user's avatar URL
-		message.reply(message.author.displayAvatarURL());
-	}
+	if ( textMessage === "ucl".toLocaleLowerCase() ){
 
-	if ( textMessage === "khela hobe".toLocaleLowerCase() ){
+		console.log("ucl function call ______!_")
 
-		console.log("khelaHobe function call ______!_")
-		const string = khelaHobe();
 
-		message.channel.send(string);
+		fetch("https://heisenbug-champions-league-live-scores-v1.p.rapidapi.com/api/championsleague/match/events?team1=Paris%20Saint-Germain&team2=Real%20Madrid", {
+		"method": "GET",
+		"headers": {
+			"x-rapidapi-key": "97497578abmsh264e1759fed3e9ep111712jsn778a5a65565c",
+			"x-rapidapi-host": "heisenbug-champions-league-live-scores-v1.p.rapidapi.com"
+			}
+		})
+		.then((response) => {
+			console.log("msg should log after this line");
+			message.channel.send("ucl - CALLED WITH PROMISES and FETCH API");
+		})
+		.catch(err => {
+			console.error(err);
+		});
+	
 	}
 
 
 });
 
-function khelaHobe(){
-	fetch("https://heisenbug-champions-league-live-scores-v1.p.rapidapi.com/api/championsleague/table?group=H", {
-	"method": "GET",
-	"headers": {
-		"x-rapidapi-key": "97497578abmsh264e1759fed3e9ep111712jsn778a5a65565c",
-		"x-rapidapi-host": "heisenbug-champions-league-live-scores-v1.p.rapidapi.com"
-	}
-	})
-	.then(response => {
-		return response.records[1].team;
-		console.log(response);
-	})
-	.catch(err => {
-		console.error(err);
-	});
-
-}
 
