@@ -24,6 +24,8 @@ client.on("message", message => { // runs whenever a message is sent
 	
     if (textMessage === "Vibecheck me".toLocaleLowerCase() ) { 
 
+
+		console.log("Function call Vibecheck me ______!_")
 		//Vibechecks wither username 
 		const username = message.author.username;
         const vibeCheckString = "VibeChecked " + username; // generates a random number
@@ -39,8 +41,34 @@ client.on("message", message => { // runs whenever a message is sent
 	if (message.content === 'what is my avatar') {
 		// Send the user's avatar URL
 		message.reply(message.author.displayAvatarURL());
-	  }
+	}
 
+	if ( textMessage === "khela hobe".toLocaleLowerCase() ){
+
+		console.log("khelaHobe function call ______!_")
+		const string = khelaHobe();
+
+		message.channel.send(string);
+	}
 
 
 });
+
+function khelaHobe(){
+	fetch("https://heisenbug-champions-league-live-scores-v1.p.rapidapi.com/api/championsleague/table?group=H", {
+	"method": "GET",
+	"headers": {
+		"x-rapidapi-key": "97497578abmsh264e1759fed3e9ep111712jsn778a5a65565c",
+		"x-rapidapi-host": "heisenbug-champions-league-live-scores-v1.p.rapidapi.com"
+	}
+	})
+	.then(response => {
+		return response.records[1].team;
+		console.log(response);
+	})
+	.catch(err => {
+		console.error(err);
+	});
+
+}
+
