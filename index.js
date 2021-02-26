@@ -1,3 +1,5 @@
+const fetch = require("node-fetch");
+
 const Discord = require("discord.js"); // imports the discord library
 const fs = require("fs"); // imports the file io library
 
