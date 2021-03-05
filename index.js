@@ -15,7 +15,7 @@ client.login(token); // starts the bot up
 
 
 
-
+ 
 //******************************** MESSAGES ********************************
 client.on("message", message => { // runs whenever a message is sent
 
