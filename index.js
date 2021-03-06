@@ -8,6 +8,40 @@ const token = fs.readFileSync("token.txt").toString(); // gets your token from t
   
 client.once("ready", () => { // prints "Ready!" to the console once the bot is online
 	console.log("Ready!");
+
+	//Get list of members from a server
+	// channel id  = 810512882907349003
+
+	// ****************************** Working directory:: 
+
+	// const Guilds = client.guilds.cache.map(guild => guild);
+    // console.log(Guilds);
+    // console.log('-------------------------------------------------');
+    // console.log(Guilds[0].gu);
+
+
+	// var today = new Date();
+	// var dd = String(today.getDate()).padStart(2, '0');
+	// var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+	// var yyyy = today.getFullYear();
+
+	// today = mm + '/' + dd + '/' + yyyy;
+	// today +="\n";
+
+	// console.log(today);
+	
+	console.log('time of start npm:');
+	
+	var today = new Date();
+	var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+	var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+	var dateTime = date+' '+time;
+
+	console.log(date);
+	console.log(time);
+	//CU
+
+	// var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 });
 
 client.login(token); // starts the bot up
@@ -32,6 +66,8 @@ client.on("message", message => { // runs whenever a message is sent
 		const username = message.author.username;
         const vibeCheckString = "VibeChecked " + username; // generates a random number
         message.channel.send(vibeCheckString); // sends a message to the channel with the number
+
+
 
     }
 
@@ -76,6 +112,8 @@ client.on("message", message => { // runs whenever a message is sent
 		});
 	
 	}
+
+
 
 
 });
