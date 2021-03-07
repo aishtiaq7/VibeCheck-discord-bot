@@ -6,12 +6,13 @@ const fs = require("fs"); // imports the file io library
 const client = new Discord.Client(); // creates a discord client
 const token = fs.readFileSync("token.txt").toString(); // gets your token from the file
 
-client.once("ready", () => { // prints "Ready!" to the console once the bot is online
+client.once("ready", () => { 
+	
+	// prints "Ready!" to the console once the bot is online
 	console.log("Ready!");
 
 
-	console.log('time of start npm:');
-
+	console.log('__npm start at:');
 	var today = new Date();
 	var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
 	var time = today.getHours() + "hrs:" + today.getMinutes() + "mins:" + today.getSeconds()+"s";
@@ -20,12 +21,9 @@ client.once("ready", () => { // prints "Ready!" to the console once the bot is o
 	console.log(date);
 	console.log(time);
 
-
-
-	
 });
 
-client.login(token); // starts the bot up
+client.login(token); // starts the bot up 
 
 
 
@@ -124,14 +122,12 @@ function plTableCommandFunction(){
 		var printString = "";
 		var count =10;  // Max num of top teams to be displayed
 		//WITH FOR LOOP
-		// console.log('\tTeam\t\t\tPlayed | Pts');
 		printArray.push('\tTeam\t\t\tPlayed | Pts')
 		for ( var i=0 ; i< count; i++){
 			printString = `${response.standings[0].table[i].position}:${response.standings[0].table[i].team.name}`;
 			
 			printString +="\t\t";
 			if(response.standings[0].table[i].team.name.length < 14){
-				// console.log('__indenting on:', (i+1));
 				printString +="\t";
 			}
 			printString +=`${response.standings[0].table[i].playedGames} | ${response.standings[0].table[i].points}`;
@@ -141,16 +137,7 @@ function plTableCommandFunction(){
 
 			
 		}
-
-		// console.log(printArray[0]);
-		// Promise.resolve( printArray.join('\n') )  ;
-		// Promise.resolve( printArray.join('\n'));
 		return printArray.join('\n');
-		// printArray.join('\n');
-
-		// console.log("response.standings[0].table[0]");
-		// console.log(response.standings[0].table[0]);
-
 	})
 
 }
