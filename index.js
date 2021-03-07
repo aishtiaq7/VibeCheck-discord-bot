@@ -112,28 +112,33 @@ function plTableCommandFunction(){
 
 		// console.log(response.standings[0].table);
 		//print the top 5 teams:
-
-		var printString = "";
-		var count =1;
-
+		
 		//WITH FOR EACH LOOP 
 		// response.standings[0].table.forEach(teamStanding =>{
-		// 	printString = `${teamStanding.position}:${teamStanding.team.name}`
-		// 	console.log(printString);
-		// 	count++;
+			// 	printString = `${teamStanding.position}:${teamStanding.team.name}`
+			// 	console.log(printString);
+			// 	count++;
 			
-		// })
-		
+			// })
+			
+			
+		var printString = "";
+		var count =10;
 		//WITH FOR LOOP
-		for ( var i=0 ; i< 5; i++){
+		console.log('\tTeam\t\t\tPlayed | Points');
+		for ( var i=0 ; i< count; i++){
 			printString = `${response.standings[0].table[i].position}:${response.standings[0].table[i].team.name}`;
+			
+			printString +="\t\t";
+			printString +=`${response.standings[0].table[i].playedGames} | ${response.standings[0].table[i].points}`;
+			
 			console.log(printString);
 
 			
 		}
 
-
-		// console.log(response.standings[0].table[0]);
+		console.log("response.standings[0].table[0]");
+		console.log(response.standings[0].table[0]);
 
 	})
 	.catch(err => {
