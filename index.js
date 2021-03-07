@@ -22,8 +22,7 @@ client.once("ready", () => { // prints "Ready!" to the console once the bot is o
 
 
 
-	//Testing function calls:
-	plTableCommandFunction();
+	
 });
 
 client.login(token); // starts the bot up
@@ -60,8 +59,19 @@ client.on("message", message => { // runs whenever a message is sent
 
 	if ( textMessage === "pl table".toLocaleLowerCase() ){
 
-		plTableCommandFunction();
-		// message.channel.send(string);
+		//Testing function calls:
+		plTableCommandFunction()
+		.then( response =>{
+			console.log('after function call log:');
+			console.log(response);
+			message.channel.send(response);
+			
+		})
+		.catch(err =>{
+			console.log(err);
+		})
+
+
 	}
 
 	if ( textMessage === "ucl".toLocaleLowerCase() ){
@@ -101,7 +111,7 @@ client.on("message", message => { // runs whenever a message is sent
 function plTableCommandFunction(){
 
 
-	fetch("http://api.football-data.org/v2/competitions/2021/standings", {
+	return fetch("http://api.football-data.org/v2/competitions/2021/standings", {
 		headers: { 'X-Auth-Token': '06d819b33cd245fc89707771ad9759a2' },
 		url: 'https://api.football-data.org/v2/competitions/CL/matches',
 		dataType: 'json',
@@ -110,39 +120,38 @@ function plTableCommandFunction(){
 	.then(res => res.json())
 	.then((response) => {
 
-		// console.log(response.standings[0].table);
-		//print the top 5 teams:
-		
-		//WITH FOR EACH LOOP 
-		// response.standings[0].table.forEach(teamStanding =>{
-			// 	printString = `${teamStanding.position}:${teamStanding.team.name}`
-			// 	console.log(printString);
-			// 	count++;
-			
-			// })
-			
-			
+		var printArray = [];
 		var printString = "";
-		var count =10;
+		var count =10;  // Max num of top teams to be displayed
 		//WITH FOR LOOP
-		console.log('\tTeam\t\t\tPlayed | Points');
+		// console.log('\tTeam\t\t\tPlayed | Pts');
+		printArray.push('\tTeam\t\t\tPlayed | Pts')
 		for ( var i=0 ; i< count; i++){
 			printString = `${response.standings[0].table[i].position}:${response.standings[0].table[i].team.name}`;
 			
 			printString +="\t\t";
+			if(response.standings[0].table[i].team.name.length < 14){
+				// console.log('__indenting on:', (i+1));
+				printString +="\t";
+			}
 			printString +=`${response.standings[0].table[i].playedGames} | ${response.standings[0].table[i].points}`;
 			
-			console.log(printString);
+			// console.log(printString);
+			printArray.push(printString);
 
 			
 		}
 
-		console.log("response.standings[0].table[0]");
-		console.log(response.standings[0].table[0]);
+		// console.log(printArray[0]);
+		// Promise.resolve( printArray.join('\n') )  ;
+		// Promise.resolve( printArray.join('\n'));
+		return printArray.join('\n');
+		// printArray.join('\n');
+
+		// console.log("response.standings[0].table[0]");
+		// console.log(response.standings[0].table[0]);
 
 	})
-	.catch(err => {
-		console.error(err);
-	});
+
 }
 
