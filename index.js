@@ -70,7 +70,7 @@ client.on("message", message => { // runs whenever a message is sent
 		})
 
 
-	}
+	} 
 
 	if ( textMessage === "ucl".toLocaleLowerCase() ){
 
