@@ -8,10 +8,10 @@ const token = fs.readFileSync("token.txt").toString(); // gets your token from t
 
 client.once("ready", () => { 
 	
-	// prints "Ready!" to the console once the bot is online
+	console.log('deployed from main branch..')
+	
+	
 	console.log("Ready!");
-
-
 	console.log('__npm start at:');
 	var today = new Date();
 	var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
