@@ -6,6 +6,23 @@ const fs = require("fs"); // imports the file io library
 const client = new Discord.Client(); // creates a discord client
 const token = fs.readFileSync("token.txt").toString(); // gets your token from the file
 
+//Import other node modules:
+// let Users = require('./vibecheck_scoreCard.js');
+
+let {Person} = require('./vibecheck_scoreCard.js') ;
+
+// create some books and get their descriptions
+// let booksILike = [
+//     new Book("Under The Dome", "Steven King"),
+//     new Book("Julius Ceasar", "William Shakespeare")
+// ];
+var person1 = new Person('Awshaf');
+console.log(person1);
+// console.log("I also like " + booksILike[0].describeBook() + " and " + booksILike[1].describeBook());
+
+//--------------------------------
+
+
 client.once("ready", () => { 
 	
 	// prints "Ready!" to the console once the bot is online
@@ -36,6 +53,8 @@ client.on("message", message => { // runs whenever a message is sent
 	var textMessage = message.content;
 	textMessage = textMessage.toLowerCase();
 
+	
+	
 
     if (textMessage === "Vibecheck me".toLocaleLowerCase() ) {
 
@@ -104,8 +123,22 @@ client.on("message", message => { // runs whenever a message is sent
 
 	}
 
+	if ( textMessage === "vibecheck".toLocaleLowerCase() ){
+		console.log("vibecheck function call ______!_")
+		registerVibecheck(message);
+		// message.author.username;
+		// message.channel.send(string);
+	}
+
 });
 
+function registerVibecheck(message){
+	//console.log(message);
+
+	console.log('author', message.author.username);
+
+
+}
 function plTableCommandFunction(){
 
 
