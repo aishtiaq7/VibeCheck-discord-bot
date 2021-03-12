@@ -146,6 +146,8 @@ client.on("message", message => { // runs whenever a message is sent
 			end();
 			displayVibeCheckers(message);
 
+			vibeCheckers =[];
+
 			console.log(`endTime() called after ${timeoutValueInSec/1000}s`);
 		}, timeoutValueInSec);
 
@@ -170,7 +172,11 @@ client.on("message", message => { // runs whenever a message is sent
 function displayVibeCheckers(message){
 	//YOU HAVE vibeCheckers <---- this is an array containing the people who vibechecked
 	
-	// message.channel.send(string);
+	if( vibeCheckers.length == 0){
+		message.channel.send('No one vibechecked in the given time :( ');
+		return;
+	}
+
 	var replyString = 'Vibecheckers:\n';
 
 	console.log('loggin vibeCheckers:');
@@ -202,10 +208,6 @@ function registerVibecheck(message){
 
 	var person1 = new Person(message.author.username.toString())
 	
-	// var personExists = vibeCheckers.some(person=>{
-	// 	console.log(`${message.author.username} found in vibeChecker array`);
-	// 	person.Name == message.author.username.toString();
-	// });
 
 	function checkAvailability(vibecheckers, username) {
 		return vibecheckers.some(person => person.Name === username);
@@ -213,11 +215,10 @@ function registerVibecheck(message){
 	
 	personExists= checkAvailability(vibeCheckers, username );
 	
-	console.log('personExists:',personExists);
-	// console.log(personExists);
+	// console.log('personExists:',personExists);
 
 	if ( !personExists ){
-		console.log(`pushing ${person1}`);
+		console.log(`pushing ${person1.Name}`);
 		vibeCheckers.push(
 			person1
 		);
@@ -225,7 +226,6 @@ function registerVibecheck(message){
 
 	console.log('logging vibeChecker array:');
 	console.log(vibeCheckers);
-	// console.log(person1);
 	
 
 }
