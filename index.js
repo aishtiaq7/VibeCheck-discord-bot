@@ -151,6 +151,8 @@ client.on("message", message => { // runs whenever a message is sent
 		setTimeout( ()=>{
 			vibecheckIsActive = false;
 			end();
+			displayVibeCheckers(message);
+
 			console.log('endTime() called after 5s');
 		}, 10000);
 
@@ -171,6 +173,25 @@ client.on("message", message => { // runs whenever a message is sent
 	
 
 });
+
+function displayVibeCheckers(message){
+	//YOU HAVE vibeCheckers <---- this is an array containing the people who vibechecked
+	
+	// message.channel.send(string);
+	
+	// var resultString = `Vibecheckers\n`;
+
+	// var temp = vibeCheckers.forEach( (person)=>{
+	// 	person.name;
+	// })
+
+
+	// resultString += `${vibeCheckers.forEach( (person)=>{
+	// 	person.name;
+	// })}`;
+
+	console.log(vibeCheckers);
+}
 
 
 
