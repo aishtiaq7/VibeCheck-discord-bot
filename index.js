@@ -159,7 +159,7 @@ client.on("message", message => { // runs whenever a message is sent
 		
 	}
 
-	if ( textMessage === "vibecheck".toLocaleLowerCase() ){
+	if ( textMessage === "vibin".toLocaleLowerCase() ){
 		console.log("vibecheck function call ______!_")
 
 		if( vibecheckIsActive ){
@@ -178,19 +178,23 @@ function displayVibeCheckers(message){
 	//YOU HAVE vibeCheckers <---- this is an array containing the people who vibechecked
 	
 	// message.channel.send(string);
-	
-	// var resultString = `Vibecheckers\n`;
+	var replyString = 'Vibecheckers:\n';
 
-	// var temp = vibeCheckers.forEach( (person)=>{
-	// 	person.name;
-	// })
-
-
-	// resultString += `${vibeCheckers.forEach( (person)=>{
-	// 	person.name;
-	// })}`;
-
+	console.log('loggin vibeCheckers:');
 	console.log(vibeCheckers);
+
+	// for ( var i =0; i<=vibeCheckers.length; i++){
+	// 	// console.log(`vibeCheckers.len = ${vibeCheckers.length}`);
+	// 	// console.log('vibeCheckers[i].Name()',vibeCheckers[i].Name());
+	// 	replyString += `${vibeCheckers[i].Name()}`;
+	// }
+	vibeCheckers.forEach( person=> {
+		replyString += `${person.Name}\n`
+	})
+
+	console.log(replyString);
+	message.channel.send(replyString);
+	// console.log(vibeCheckers);
 }
 
 
