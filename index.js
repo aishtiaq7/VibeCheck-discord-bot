@@ -133,39 +133,32 @@ client.on("message", message => { // runs whenever a message is sent
 
 	if ( textMessage === "vc now".toLocaleLowerCase() && message.author.username =='robi' ){
 
-		console.log("vibecheck now function call ______!_")
+		console.log("vc now function call ______!_")
 		//registerVibecheck(message);
 		vibecheckIsActive = true;
 		
 		start();
-		// displayTime();
-		// setInterval(function(){
-		// 	// console.log(`startime:${startTime} sec`);
-		// 	displayTime();
-		// 	// if(startTime >= 60){
-		// 	// 	vibecheckIsActive = false;
-		// 	// }
-		// }, 1000);
 
 		
+		const timeoutValueInSec = 10000;
 		setTimeout( ()=>{
 			vibecheckIsActive = false;
 			end();
 			displayVibeCheckers(message);
 
-			console.log('endTime() called after 5s');
-		}, 10000);
+			console.log(`endTime() called after ${timeoutValueInSec/1000}s`);
+		}, timeoutValueInSec);
 
 		
 	}
 
 	if ( textMessage === "vibin".toLocaleLowerCase() ){
-		console.log("vibecheck function call ______!_")
+		console.log("vibin function call ______!_")
 
 		if( vibecheckIsActive ){
 			registerVibecheck(message);
 		} else{
-			console.log('vibecheck NOT registered due to expired time');
+			console.log('vibin NOT registered due to expired time');
 		}
 	
 	}
@@ -181,13 +174,7 @@ function displayVibeCheckers(message){
 	var replyString = 'Vibecheckers:\n';
 
 	console.log('loggin vibeCheckers:');
-	console.log(vibeCheckers);
 
-	// for ( var i =0; i<=vibeCheckers.length; i++){
-	// 	// console.log(`vibeCheckers.len = ${vibeCheckers.length}`);
-	// 	// console.log('vibeCheckers[i].Name()',vibeCheckers[i].Name());
-	// 	replyString += `${vibeCheckers[i].Name()}`;
-	// }
 	vibeCheckers.forEach( person=> {
 		replyString += `${person.Name}\n`
 	})
@@ -210,14 +197,35 @@ function registerVibecheck(message){
 		Pop the array to display the vibecheckers with score
 
 	*/
-
+	
+	const username = message.author.username.toString();
 
 	var person1 = new Person(message.author.username.toString())
+	
+	// var personExists = vibeCheckers.some(person=>{
+	// 	console.log(`${message.author.username} found in vibeChecker array`);
+	// 	person.Name == message.author.username.toString();
+	// });
 
-	vibeCheckers.push(
-		person1
-	);
-	console.log(person1);
+	function checkAvailability(vibecheckers, username) {
+		return vibecheckers.some(person => person.Name === username);
+	}
+	
+	personExists= checkAvailability(vibeCheckers, username );
+	
+	console.log('personExists:',personExists);
+	// console.log(personExists);
+
+	if ( !personExists ){
+		console.log(`pushing ${person1}`);
+		vibeCheckers.push(
+			person1
+		);
+	}
+
+	console.log('logging vibeChecker array:');
+	console.log(vibeCheckers);
+	// console.log(person1);
 	
 
 }
