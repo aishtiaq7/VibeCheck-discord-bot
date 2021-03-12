@@ -7,18 +7,9 @@ const client = new Discord.Client(); // creates a discord client
 const token = fs.readFileSync("token.txt").toString(); // gets your token from the file
 
 //Import other node modules:
-// let Users = require('./vibecheck_scoreCard.js');
-
 let {Person} = require('./vibecheck_scoreCard.js') ;
-
-// create some books and get their descriptions
-// let booksILike = [
-//     new Book("Under The Dome", "Steven King"),
-//     new Book("Julius Ceasar", "William Shakespeare")
-// ];
-var person1 = new Person('Awshaf');
-console.log(person1);
-// console.log("I also like " + booksILike[0].describeBook() + " and " + booksILike[1].describeBook());
+//var person1 = new Person('Awshaf');
+//console.log(person1);
 
 //--------------------------------
 
@@ -42,8 +33,25 @@ client.once("ready", () => {
 
 client.login(token); // starts the bot up 
 
+var vibeCheckers =[];
+var vibecheckIsActive = false; // tracker for vibecheck window to allow ppl to vibecheck
 
+var startTime, endTime;
 
+function start() {
+  startTime = new Date();
+};
+
+function end() {
+  endTime = new Date();
+  var timeDiff = endTime - startTime; //in ms
+  // strip the ms
+  timeDiff /= 1000;
+
+  // get seconds 
+  var seconds = Math.round(timeDiff);
+  console.log(seconds + " seconds");
+}
 
 
 //******************************** MESSAGES ********************************
@@ -123,22 +131,73 @@ client.on("message", message => { // runs whenever a message is sent
 
 	}
 
+	if ( textMessage === "vc now".toLocaleLowerCase() && message.author.username =='robi' ){
+
+		console.log("vibecheck now function call ______!_")
+		//registerVibecheck(message);
+		vibecheckIsActive = true;
+		
+		start();
+		// displayTime();
+		// setInterval(function(){
+		// 	// console.log(`startime:${startTime} sec`);
+		// 	displayTime();
+		// 	// if(startTime >= 60){
+		// 	// 	vibecheckIsActive = false;
+		// 	// }
+		// }, 1000);
+
+		
+		setTimeout( ()=>{
+			vibecheckIsActive = false;
+			end();
+			console.log('endTime() called after 5s');
+		}, 10000);
+
+		
+	}
+
 	if ( textMessage === "vibecheck".toLocaleLowerCase() ){
 		console.log("vibecheck function call ______!_")
-		registerVibecheck(message);
-		// message.author.username;
-		// message.channel.send(string);
+
+		if( vibecheckIsActive ){
+			registerVibecheck(message);
+		} else{
+			console.log('vibecheck NOT registered due to expired time');
+		}
+	
 	}
+
+	
 
 });
 
+
+
 function registerVibecheck(message){
-	//console.log(message);
+	/*
+	Steps to follow:
+	-check if the time to vibecheck is still valid
+		if(valid){
+			push username + score to array
+		}
+	-When vibecheck time runs out
+		Pop the array to display the vibecheckers with score
 
-	console.log('author', message.author.username);
+	*/
 
+
+	var person1 = new Person(message.author.username.toString())
+
+	vibeCheckers.push(
+		person1
+	);
+	console.log(person1);
+	
 
 }
+
+
 function plTableCommandFunction(){
 
 
