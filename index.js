@@ -40,7 +40,7 @@ var vibecheckIsActive = false; // tracker for vibecheck window to allow ppl to v
 var startTime, endTime;
 var timeDiff;
 
-var timeoutValueInMs = 5 * ( 60 * 1000 ) ; // window to responds to 'vibecheck @everyone'
+var timeoutValueInMs = 25 * ( 60 * 1000 ) ; // window to responds to 'vibecheck @everyone'
 
 function start() {
 	startTime = new Date();
