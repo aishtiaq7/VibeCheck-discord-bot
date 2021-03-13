@@ -1,10 +1,11 @@
 ## VibeCheck Discrod Bot ## 
 
-
-* Random timer vibe check 
-* Each responds vibeCheck within a time specified time
-        * if someone doesnt respond, he missed his vibeCheck (keep score)
-* UCL command to print upcoming ucl matches..
+# Implemented Commands: #
+* 'vibecheck @everyone' - open a 25min window to vibe back using 'vibin' - command
+* 'Vibecheck me' - Vibechecks back the sender
+* 'ucl' - Prints the upcoming UCL mathces
+* 'pl table' - Prints the latest league standing for Primier League
 
 TODO:
-*Hide your token key with .gitignore?? Token needed in heroku
+* Hide your token key with .gitignore?? Token needed in heroku
+* Random timer 'vibecheck @everyone' in a suitable time. 
