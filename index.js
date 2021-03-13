@@ -28,6 +28,7 @@ client.once("ready", () => {
 
 	console.log(date);
 	console.log(time);
+	console.log('\n');
 
 });
 
@@ -37,20 +38,69 @@ var vibeCheckers =[];
 var vibecheckIsActive = false; // tracker for vibecheck window to allow ppl to vibecheck
 
 var startTime, endTime;
+var timeDiff;
+
+var timeoutValueInMs =11000 ; // window to responds to 'vc now'
 
 function start() {
-  startTime = new Date();
+	startTime = new Date();
+	
 };
 
-function end() {
-  endTime = new Date();
-  var timeDiff = endTime - startTime; //in ms
-  // strip the ms
-  timeDiff /= 1000;
+function elapsedTimeForScore() {
 
-  // get seconds 
-  var seconds = Math.round(timeDiff);
-  console.log(seconds + " seconds");
+	if( !vibecheckIsActive){
+		return 0;
+	}
+	var timeSoFar = new Date();
+	var timeScore = timeSoFar - startTime;
+
+	timeScore /= 1000; //strip ms;
+
+	//timeScore <-- now it contains the elapsed time in SECONDS
+
+	//Converting it to score of 100:
+	// console.log('timeScore', timeScore);
+	// console.log('timeoutValueInMs',timeoutValueInMs);
+	// console.log('timeScore/timeoutVaueInMs',timeScore/timeoutValueInMs );
+	// console.log('Math.floor( (timeScore/timeoutValueInMs) *100 )', Math.floor( (timeScore/timeoutValueInMs) *100 ));
+
+	var score = Math.floor( (1 -(timeScore/ (timeoutValueInMs/1000)) ) *100 );
+	
+	return score;
+}
+
+function end() {
+	endTime = new Date();
+	timeDiff = endTime - startTime; //in ms
+	// strip the ms
+	timeDiff /= 1000;
+
+	// get seconds 
+	var seconds = Math.round(timeDiff);
+	console.log(seconds + " seconds");
+
+		
+	// // get seconds (Original had 'round' which incorrectly counts 0:28, 0:29, 1:30 ... 1:59, 1:0)
+	// var seconds = Math.round(timeDiff % 60);
+
+	// // remove seconds from the date
+	// timeDiff = Math.floor(timeDiff / 60);
+
+	// // get minutes
+	// var minutes = Math.round(timeDiff % 60);
+
+	// // remove minutes from the date
+	// timeDiff = Math.floor(timeDiff / 60);
+
+	// // get hours
+	// var hours = Math.round(timeDiff % 24);
+
+	// // remove hours from the date
+	// timeDiff = Math.floor(timeDiff / 24);
+
+	// // the rest of timeDiff is number of days
+	// var days = timeDiff ;
 }
 
 
@@ -134,13 +184,21 @@ client.on("message", message => { // runs whenever a message is sent
 	if ( textMessage === "vc now".toLocaleLowerCase() && message.author.username =='robi' ){
 
 		console.log("vc now function call ______!_")
-		//registerVibecheck(message);
 		vibecheckIsActive = true;
 		
-		start();
+		start(); // starts clock 
 
-		
-		const timeoutValueInSec = 10000;
+				
+		/*
+			mins to seconds
+			1s = 1000ms
+			1m = 60 x 1000ms 
+			15m = 15 x ( 60 x 1000 )ms
+			
+		*/
+
+		// const timeoutValueInMs = 1 * ( 60 * 1000 );
+		timeoutValueInMs = 11000;
 		setTimeout( ()=>{
 			vibecheckIsActive = false;
 			end();
@@ -148,8 +206,8 @@ client.on("message", message => { // runs whenever a message is sent
 
 			vibeCheckers =[];
 
-			console.log(`endTime() called after ${timeoutValueInSec/1000}s`);
-		}, timeoutValueInSec);
+			console.log(`endTime() called after ${timeoutValueInMs/1000}s`);
+		}, timeoutValueInMs);
 
 		
 	}
@@ -157,6 +215,7 @@ client.on("message", message => { // runs whenever a message is sent
 	if ( textMessage === "vibin".toLocaleLowerCase() ){
 		console.log("vibin function call ______!_")
 
+		console.log('===vibin score:', elapsedTimeForScore() );
 		if( vibecheckIsActive ){
 			registerVibecheck(message);
 		} else{
@@ -164,10 +223,8 @@ client.on("message", message => { // runs whenever a message is sent
 		}
 	
 	}
-
-	
-
 });
+
 
 function displayVibeCheckers(message){
 	//YOU HAVE vibeCheckers <---- this is an array containing the people who vibechecked
@@ -182,7 +239,7 @@ function displayVibeCheckers(message){
 	console.log('loggin vibeCheckers:');
 
 	vibeCheckers.forEach( person=> {
-		replyString += `${person.Name}\n`
+		replyString += `${person.Name}\t${person.Score}pts\n`
 	})
 
 	console.log(replyString);
@@ -206,7 +263,10 @@ function registerVibecheck(message){
 	
 	const username = message.author.username.toString();
 
-	var person1 = new Person(message.author.username.toString())
+	var person1 = new Person(
+		message.author.username.toString(), 
+		elapsedTimeForScore()
+		);
 	
 
 	function checkAvailability(vibecheckers, username) {
@@ -215,17 +275,16 @@ function registerVibecheck(message){
 	
 	personExists= checkAvailability(vibeCheckers, username );
 	
-	// console.log('personExists:',personExists);
 
 	if ( !personExists ){
-		console.log(`pushing ${person1.Name}`);
+		// console.log(`pushing ${person1.Name}`);
 		vibeCheckers.push(
 			person1
 		);
 	}
 
-	console.log('logging vibeChecker array:');
-	console.log(vibeCheckers);
+	// console.log('logging vibeChecker array:');
+	// console.log(vibeCheckers);
 	
 
 }
