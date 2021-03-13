@@ -40,7 +40,7 @@ var vibecheckIsActive = false; // tracker for vibecheck window to allow ppl to v
 var startTime, endTime;
 var timeDiff;
 
-var timeoutValueInMs =11000 ; // window to responds to 'vc now'
+var timeoutValueInMs = 2 * ( 60 * 1000 ) ; // window to responds to 'vibecheck @everyone'
 
 function start() {
 	startTime = new Date();
@@ -115,15 +115,15 @@ client.on("message", message => { // runs whenever a message is sent
 	
 
     if (textMessage === "Vibecheck me".toLocaleLowerCase() ) {
-
-
+		
+		
 		console.log("Function call Vibecheck me ______!_")
 		//Vibechecks wither username
 		const username = message.author.username;
         const vibeCheckString = "VibeChecked " + username; // generates a random number
         message.channel.send(vibeCheckString); // sends a message to the channel with the number
-
-
+		
+		
 
     }
 
@@ -181,11 +181,12 @@ client.on("message", message => { // runs whenever a message is sent
 
 	}
 
-	if ( textMessage === "vc now".toLocaleLowerCase() && message.author.username =='robi' ){
+	if ( textMessage === "Vibecheck @everyone".toLocaleLowerCase() ){
 
 		console.log("vc now function call ______!_")
 		vibecheckIsActive = true;
 		
+
 		start(); // starts clock 
 
 				
@@ -197,8 +198,8 @@ client.on("message", message => { // runs whenever a message is sent
 			
 		*/
 
-		// const timeoutValueInMs = 1 * ( 60 * 1000 );
-		timeoutValueInMs = 11000;
+		// const timeoutValueInMs = 25 * ( 60 * 1000 );
+		// timeoutValueInMs = 11000; *******GLOBAL VALUE ****** 
 		setTimeout( ()=>{
 			vibecheckIsActive = false;
 			end();
@@ -209,6 +210,7 @@ client.on("message", message => { // runs whenever a message is sent
 			console.log(`endTime() called after ${timeoutValueInMs/1000}s`);
 		}, timeoutValueInMs);
 
+		message.channel.send(`Vibecheck window closes in:${timeoutValueInMs/1000/60}min`);
 		
 	}
 
@@ -234,12 +236,12 @@ function displayVibeCheckers(message){
 		return;
 	}
 
-	var replyString = 'Vibecheckers:\n';
+	var replyString = 'Good vibes:\n';
 
 	console.log('loggin vibeCheckers:');
 
 	vibeCheckers.forEach( person=> {
-		replyString += `${person.Name}\t${person.Score}pts\n`
+		replyString += `${person.Name}\t\t\t${person.Score}pts\n`
 	})
 
 	console.log(replyString);
