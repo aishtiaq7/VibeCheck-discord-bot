@@ -40,7 +40,7 @@ var vibecheckIsActive = false; // tracker for vibecheck window to allow ppl to v
 var startTime, endTime;
 var timeDiff;
 
-var timeoutValueInMs = 2 * ( 60 * 1000 ) ; // window to responds to 'vibecheck @everyone'
+var timeoutValueInMs = 5 * ( 60 * 1000 ) ; // window to responds to 'vibecheck @everyone'
 
 function start() {
 	startTime = new Date();
@@ -78,7 +78,7 @@ function end() {
 
 	// get seconds 
 	var seconds = Math.round(timeDiff);
-	console.log(seconds + " seconds");
+	console.log(seconds + " seconds window ran");
 
 		
 	// // get seconds (Original had 'round' which incorrectly counts 0:28, 0:29, 1:30 ... 1:59, 1:0)
@@ -117,7 +117,7 @@ client.on("message", message => { // runs whenever a message is sent
     if (textMessage === "Vibecheck me".toLocaleLowerCase() ) {
 		
 		
-		console.log("Function call Vibecheck me ______!_")
+		console.log("Function call -  Vibecheck me ____!_ by:", message.author.username)
 		//Vibechecks wither username
 		const username = message.author.username;
         const vibeCheckString = "VibeChecked " + username; // generates a random number
@@ -151,7 +151,7 @@ client.on("message", message => { // runs whenever a message is sent
 
 	if ( textMessage === "ucl".toLocaleLowerCase() ){
 
-		console.log("ucl function call ______!_")
+		console.log("ucl function call ______!_ by:", message.author.username)
 
 		fetch("https://api.football-data.org/v2/competitions/CL/matches", {
 			headers: { 'X-Auth-Token': '06d819b33cd245fc89707771ad9759a2' },
@@ -183,7 +183,7 @@ client.on("message", message => { // runs whenever a message is sent
 
 	if ( textMessage === "Vibecheck @everyone".toLocaleLowerCase() ){
 
-		console.log("vc now function call ______!_")
+		console.log("vc now - function call ______!_ by:", message.author.username)
 		vibecheckIsActive = true;
 		
 
@@ -207,7 +207,7 @@ client.on("message", message => { // runs whenever a message is sent
 
 			vibeCheckers =[];
 
-			console.log(`endTime() called after ${timeoutValueInMs/1000}s`);
+			console.log(`endTime() called after ${timeoutValueInMs/1000}s from setTimeout`);
 		}, timeoutValueInMs);
 
 		message.channel.send(`Vibecheck window closes in:${timeoutValueInMs/1000/60}min`);
@@ -215,7 +215,7 @@ client.on("message", message => { // runs whenever a message is sent
 	}
 
 	if ( textMessage === "vibin".toLocaleLowerCase() ){
-		console.log("vibin function call ______!_")
+		console.log("vibin function call ______!_by:", message.author.username)
 
 		console.log('===vibin score:', elapsedTimeForScore() );
 		if( vibecheckIsActive ){
@@ -238,7 +238,7 @@ function displayVibeCheckers(message){
 
 	var replyString = 'Good vibes:\n';
 
-	console.log('loggin vibeCheckers:');
+	// console.log('loggin vibeCheckers:');
 
 	vibeCheckers.forEach( person=> {
 		replyString += `${person.Name}\t\t\t${person.Score}pts\n`
