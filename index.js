@@ -40,7 +40,7 @@ var vibecheckIsActive = false; // tracker for vibecheck window to allow ppl to v
 var startTime, endTime;
 var timeDiff;
 
-var timeoutValueInMs = 25 * ( 60 * 1000 ) ; // window to responds to 'vibecheck @everyone'
+var timeoutValueInMs = 15 * ( 60 * 1000 ) ; // window to responds to 'vibecheck @everyone'
 
 function start() {
 	startTime = new Date();
@@ -122,7 +122,11 @@ client.on("message", message => { // runs whenever a message is sent
 		const username = message.author.username;
         const vibeCheckString = "VibeChecked " + username; // generates a random number
         message.channel.send(vibeCheckString); // sends a message to the channel with the number
-		
+
+		//react with an emoji
+		// const reactionEmoji = message.guild.emojis.cache.find(emoji => emoji.name === ':punch:');
+		message.react('👋🏼');
+		// message.react();
 		
 
     }
@@ -220,7 +224,10 @@ client.on("message", message => { // runs whenever a message is sent
 		console.log('===vibin score:', elapsedTimeForScore() );
 		if( vibecheckIsActive ){
 			registerVibecheck(message);
+			message.react('🤙🏾');
 		} else{
+			message.react('👎🏾');
+			
 			console.log('vibin NOT registered due to expired time');
 		}
 	
