@@ -163,13 +163,14 @@ client.on("message", message => { // runs whenever a message is sent
 		uclFetchFunction()
 		.then((response) => {
 
-			console.log("console logging response");
+			// console.log("console logging response");
 			// console.log(response);
-			var matchString ="";
+			var matchString ="@Bangladesh Standard Time:\n";
 			response.matches.forEach(element => {
                 if( element.status == "SCHEDULED"){
                     matchString += element.awayTeam.name + " vs " + element.homeTeam.name +"\n";
 					matchString += changeTimeZone(element.utcDate);
+					matchString += "\n";
 					matchString += "\n";
 					// console.log(matchString);
                 }
@@ -246,7 +247,7 @@ function changeTimeZone( dateToChange){
         timeZone: 'Asia/Dhaka',
         // timeZoneName: 'short',
         dateStyle: 'full',
-        timeStyle: 'full',
+        timeStyle: 'short',
         hour12: true,
     }
     const formatter = new Intl.DateTimeFormat('en-GB', options)
