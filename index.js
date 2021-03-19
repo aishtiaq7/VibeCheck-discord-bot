@@ -40,7 +40,7 @@ var vibecheckIsActive = false; // tracker for vibecheck window to allow ppl to v
 var startTime, endTime;
 var timeDiff;
 
-var timeoutValueInMs = 5 * ( 60 * 1000 ) ; // window to responds to 'vibecheck @everyone'
+var timeoutValueInMs = 15 * ( 60 * 1000 ) ; // window to responds to 'vibecheck @everyone'
 
 function start() {
 	startTime = new Date();
@@ -122,7 +122,11 @@ client.on("message", message => { // runs whenever a message is sent
 		const username = message.author.username;
         const vibeCheckString = "VibeChecked " + username; // generates a random number
         message.channel.send(vibeCheckString); // sends a message to the channel with the number
-		
+
+		//react with an emoji
+		// const reactionEmoji = message.guild.emojis.cache.find(emoji => emoji.name === ':punch:');
+		message.react('👋🏼');
+		// message.react();
 		
 
     }
@@ -139,7 +143,10 @@ client.on("message", message => { // runs whenever a message is sent
 		.then( response =>{
 			console.log('after function call log:');
 			console.log(response);
-			message.channel.send(response);
+			if( response.length !=0){
+				console.log('no response so no reply.');
+				message.channel.send(response);
+			}
 			
 		})
 		.catch(err =>{
@@ -153,26 +160,27 @@ client.on("message", message => { // runs whenever a message is sent
 
 		console.log("ucl function call ______!_ by:", message.author.username)
 
-		fetch("https://api.football-data.org/v2/competitions/CL/matches", {
-			headers: { 'X-Auth-Token': '06d819b33cd245fc89707771ad9759a2' },
-			url: 'https://api.football-data.org/v2/competitions/CL/matches',
-			dataType: 'json',
-			type: 'GET',
-		})
-		.then(res => res.json())
+		uclFetchFunction()
 		.then((response) => {
 
-			console.log("console logging response");
-			var matchString ="";
+			// console.log("console logging response");
+			// console.log(response);
+			var matchString ="@Bangladesh Standard Time:\n";
 			response.matches.forEach(element => {
                 if( element.status == "SCHEDULED"){
-                    matchString += element.awayTeam.name + " vs " + element.homeTeam.name +" | " + element.utcDate;
-					// console.log(matchString);
+                    matchString += element.awayTeam.name + " vs " + element.homeTeam.name +"\n";
+					matchString += changeTimeZone(element.utcDate);
 					matchString += "\n";
-					console.log(matchString);
+					matchString += "\n";
+					// console.log(matchString);
                 }
             });
-			message.channel.send(matchString);
+
+			console.log('matchSting is::');
+			console.log(matchString);
+			if( matchString.length != 0){
+				message.channel.send(matchString);
+			}
 
 		})
 		.catch(err => {
@@ -220,14 +228,50 @@ client.on("message", message => { // runs whenever a message is sent
 		console.log('===vibin score:', elapsedTimeForScore() );
 		if( vibecheckIsActive ){
 			registerVibecheck(message);
+			message.react('🤙🏾');
 		} else{
+			message.react('👎🏾');
+			
 			console.log('vibin NOT registered due to expired time');
 		}
 	
 	}
 });
 
+function changeTimeZone( dateToChange){
+    
+    const changeThisDate = new Date(dateToChange);
+    const options = {
+        // day: '2-digit', month: '2-digit', year: '2-digit',  
+        // hour: '2-digit', minute: '2-digit', second: '2-digit',
+        timeZone: 'Asia/Dhaka',
+        // timeZoneName: 'short',
+        dateStyle: 'full',
+        timeStyle: 'short',
+        hour12: true,
+    }
+    const formatter = new Intl.DateTimeFormat('en-GB', options)
+    
+    const dateInNewTimezone = formatter.format(changeThisDate) 
 
+    // console.log( 'dateInNewTimezone: ',dateInNewTimezone) // 12-04-10 17:10:30 GMT+7
+    
+    return dateInNewTimezone;
+    
+}
+
+function uclFetchFunction() {
+
+	console.log('inside uclFetchFunciton');
+
+	return fetch("https://api.football-data.org/v2/competitions/CL/matches", {
+			headers: { 'X-Auth-Token': '06d819b33cd245fc89707771ad9759a2' },
+			url: 'https://api.football-data.org/v2/competitions/CL/matches',
+			dataType: 'json',
+			type: 'GET',
+		})
+		.then(res => res.json())
+}
 function displayVibeCheckers(message){
 	//YOU HAVE vibeCheckers <---- this is an array containing the people who vibechecked
 	
