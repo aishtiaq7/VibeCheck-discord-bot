@@ -160,13 +160,7 @@ client.on("message", message => { // runs whenever a message is sent
 
 		console.log("ucl function call ______!_ by:", message.author.username)
 
-		fetch("https://api.football-data.org/v2/competitions/CL/matches", {
-			headers: { 'X-Auth-Token': '06d819b33cd245fc89707771ad9759a2' },
-			url: 'https://api.football-data.org/v2/competitions/CL/matches',
-			dataType: 'json',
-			type: 'GET',
-		})
-		.then(res => res.json())
+		uclFetchFunction()
 		.then((response) => {
 
 			console.log("console logging response");
@@ -174,10 +168,10 @@ client.on("message", message => { // runs whenever a message is sent
 			var matchString ="";
 			response.matches.forEach(element => {
                 if( element.status == "SCHEDULED"){
-                    matchString += element.awayTeam.name + " vs " + element.homeTeam.name +" | " + element.utcDate;
-					// console.log(matchString);
+                    matchString += element.awayTeam.name + " vs " + element.homeTeam.name +"\n";
+					matchString += changeTimeZone(element.utcDate);
 					matchString += "\n";
-					console.log(matchString);
+					// console.log(matchString);
                 }
             });
 
@@ -243,7 +237,40 @@ client.on("message", message => { // runs whenever a message is sent
 	}
 });
 
+function changeTimeZone( dateToChange){
+    
+    const changeThisDate = new Date(dateToChange);
+    const options = {
+        // day: '2-digit', month: '2-digit', year: '2-digit',  
+        // hour: '2-digit', minute: '2-digit', second: '2-digit',
+        timeZone: 'Asia/Dhaka',
+        // timeZoneName: 'short',
+        dateStyle: 'full',
+        timeStyle: 'full',
+        hour12: true,
+    }
+    const formatter = new Intl.DateTimeFormat('en-GB', options)
+    
+    const dateInNewTimezone = formatter.format(changeThisDate) 
 
+    // console.log( 'dateInNewTimezone: ',dateInNewTimezone) // 12-04-10 17:10:30 GMT+7
+    
+    return dateInNewTimezone;
+    
+}
+
+function uclFetchFunction() {
+
+	console.log('inside uclFetchFunciton');
+
+	return fetch("https://api.football-data.org/v2/competitions/CL/matches", {
+			headers: { 'X-Auth-Token': '06d819b33cd245fc89707771ad9759a2' },
+			url: 'https://api.football-data.org/v2/competitions/CL/matches',
+			dataType: 'json',
+			type: 'GET',
+		})
+		.then(res => res.json())
+}
 function displayVibeCheckers(message){
 	//YOU HAVE vibeCheckers <---- this is an array containing the people who vibechecked
 	
