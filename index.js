@@ -184,7 +184,7 @@ client.on("message", message => { // runs whenever a message is sent
 
 		})
 		.catch(err => {
-			console.error(err);
+			console.error(err); 
 		});
 
 	}
