@@ -143,7 +143,10 @@ client.on("message", message => { // runs whenever a message is sent
 		.then( response =>{
 			console.log('after function call log:');
 			console.log(response);
-			message.channel.send(response);
+			if( response.length !=0){
+				console.log('no response so no reply.');
+				message.channel.send(response);
+			}
 			
 		})
 		.catch(err =>{
@@ -167,6 +170,7 @@ client.on("message", message => { // runs whenever a message is sent
 		.then((response) => {
 
 			console.log("console logging response");
+			// console.log(response);
 			var matchString ="";
 			response.matches.forEach(element => {
                 if( element.status == "SCHEDULED"){
@@ -176,7 +180,12 @@ client.on("message", message => { // runs whenever a message is sent
 					console.log(matchString);
                 }
             });
-			message.channel.send(matchString);
+
+			console.log('matchSting is::');
+			console.log(matchString);
+			if( matchString.length != 0){
+				message.channel.send(matchString);
+			}
 
 		})
 		.catch(err => {
