@@ -12,18 +12,24 @@ TODO:
 
 # Screenshots # 
 * Vibecheck me - command
-![Vibecheck me](./screenshots/vibecheck%20me.PNG)
+<p align="left">
+  <img src="./screenshots/vibecheck me.PNG" width="350" >
+</p>
 
 
 * vibecheck @everyone
-<p align="center">
+<p align="left">
   <img src="./screenshots/vibecheck everyone.PNG" width="350" >
 </p>
 
 
 * ucl - command
-![ucl ALternate](./screenshots/ucl.PNG)
+<p align="left">
+  <img src="./screenshots/ucl.PNG" width="350" >
+</p>
 
 * pl table - command
-![pl table ALternate](./screenshots/pl%20table.PNG)
+<p align="left">
+  <img src="./screenshots/pl table.PNG" width="350" >
+</p>
 
