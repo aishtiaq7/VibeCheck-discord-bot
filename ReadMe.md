@@ -12,10 +12,13 @@ TODO:
 
 # Screenshots # 
 * Vibecheck me - command
-![Vibecheck me](./screenshots/Vibecheck%20me.PNG)
+![Vibecheck me](./screenshots/vibecheck%20me.PNG)
+
 
 * vibecheck @everyone
-![vibecheck @everyone](./screenshots/vibecheck%20@everyone.PNG)
+<p align="center">
+  <img src="./screenshots/vibecheck everyone.PNG" width="350" >
+</p>
 
 
 * ucl - command
