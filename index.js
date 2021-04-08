@@ -111,7 +111,30 @@ client.on("message", message => { // runs whenever a message is sent
 	var textMessage = message.content;
 	textMessage = textMessage.toLowerCase();
 
+	if ( textMessage === "test".toLocaleLowerCase() ){
 	
+	console.log("Function call -  Vibecheck me ____!_ by:", message.author.username)
+
+	var fs = require('fs')
+	var dataToWrite = '\n567';
+	fs.appendFile('SavedData.txt', dataToWrite, function (err,data) {
+			if (err) {
+				console.log('error in Saving data locally');
+				return console.log(err);
+			}
+			console.log('Success writing data to SavedData.txt:');
+			// console.log(data);
+		});
+
+	// fs.appendFile('file.log', content, err => {
+	// 	if (err) {
+	// 	console.error(err)
+	// 	return
+	// 	}
+	// 	//done!
+	// })
+
+	}
 	
 
     if (textMessage === "Vibecheck me".toLocaleLowerCase() ) {
