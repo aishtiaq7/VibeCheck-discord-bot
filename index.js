@@ -111,29 +111,36 @@ client.on("message", message => { // runs whenever a message is sent
 	var textMessage = message.content;
 	textMessage = textMessage.toLowerCase();
 
-	if ( textMessage === "test".toLocaleLowerCase() ){
+	if (textMessage === "test".toLocaleLowerCase()) {
+		console.log("Function call -  test ____!_ by:",message.author.username);
+
+		// console.log(message.author);
+
+		var fs = require("fs");
+
+		const username = message.author.username.toString();
+
+		var person1 = new Person(
+			message.author.username.toString(), 
+			elapsedTimeForScore(),
+			message.author.id
+		);
 	
-	console.log("Function call -  Vibecheck me ____!_ by:", message.author.username)
 
-	var fs = require('fs')
-	var dataToWrite = '\n567';
-	fs.appendFile('SavedData.txt', dataToWrite, function (err,data) {
-			if (err) {
-				console.log('error in Saving data locally');
-				return console.log(err);
-			}
-			console.log('Success writing data to SavedData.txt:');
-			// console.log(data);
+		var data = person1;
+
+		var jsonData = JSON.stringify(data);
+
+		console.log('... saving data:')
+		console.log(data);
+
+		fs.appendFile("SavedData.json", jsonData, function (err, data) {
+		if (err) {
+			console.log("error in Saving data locally");
+			return console.log(err);
+		}
+		console.log('\tsaved!');
 		});
-
-	// fs.appendFile('file.log', content, err => {
-	// 	if (err) {
-	// 	console.error(err)
-	// 	return
-	// 	}
-	// 	//done!
-	// })
-
 	}
 	
 
@@ -335,8 +342,8 @@ function registerVibecheck(message){
 
 	var person1 = new Person(
 		message.author.username.toString(), 
-		elapsedTimeForScore()
-		);
+		elapsedTimeForScore(),
+		message.author.username.id);
 	
 
 	function checkAvailability(vibecheckers, username) {
