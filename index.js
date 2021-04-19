@@ -298,6 +298,7 @@ function displayVibeCheckers(message){
 	message.channel.send(replyString);
 	// console.log(vibeCheckers);
 }
+
 //TODO: change the directory of the "SavedData.json" to a folder named data and save it there cuz
 //	if you have more servers running, you'll need to store data for each in a separate file.
 function testFunction(message){
@@ -323,10 +324,6 @@ function testFunction(message){
 	});
 	*/
 
-	//READING THE FILE:
-	// let json = require('./SavedData.json');
-	// console.log(json, 'the json obj');
-	
 	/*
 	var jsonData = System.IO.File.ReadAllText(jsonFile);
         // De-serialize to object or create new list
@@ -417,14 +414,14 @@ function testFunction(message){
 	console.log('newEntry', newEntry);
 	Users.push(newEntry);
 
-	//override the Users in your dataReadAsJson
-	//dataReadAsJson.Users.push(newEntry);
 
 	console.log('\ndataReadAsJason:');
 	console.log(dataReadAsJson);
 	
 
 	//write back to json file
+	let json = JSON.stringify(dataReadAsJson);
+	fs.writeFileSync("SavedData.json", json)
 	/*
 	try {
 		const data = fs.writeFileSync("SavedData.json", dataReadAsJson);
@@ -435,6 +432,7 @@ function testFunction(message){
 		console.error(err);
 	}
 	*/
+	
 	
 
 

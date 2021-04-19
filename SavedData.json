@@ -1,17 +1,1 @@
-{
-  "Users": [
-    {
-      "id": "425904090208534528",
-      "person": { "name": "robi", "score": 0, "id": "425904090208534528" },
-      "monthlyScore": 0
-    },
-    {
-      "id": "4259040945208534528",
-      "person": { "name": "robi", "score": 0, "id": "425904090208534528" },
-      "monthlyScore": 0
-    }
-  ],
-
-
-  "newString": { "Entries": "new data to enter" }
-}
+{"Users":[{"id":"425904090208534528","person":{"name":"robi","score":0,"id":"425904090208534528"},"monthlyScore":7}],"newString":{"Entries":"new data to enter"}}
