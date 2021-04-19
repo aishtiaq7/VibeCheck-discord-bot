@@ -313,7 +313,7 @@ function saveWindowEntry(message){
 		Readfile
 		Deserialise ( covnvert string to json object)
 		Arrange data to write to later
-		Add to data
+		Add to readData
 		write back to json file
 	*/
 
@@ -321,9 +321,9 @@ function saveWindowEntry(message){
 	var dataRead;
 	try {
 		dataRead = fs.readFileSync("SavedData.json", 'utf8')
-			console.log('...reading data:');
-			console.log(dataRead)
-			console.log('\n...finished reading')
+			// console.log('...reading data:');
+			// console.log(dataRead)
+			// console.log('\n...finished reading')
 		} catch (err) {
 			console.error(err)
 		}
@@ -332,12 +332,10 @@ function saveWindowEntry(message){
 	var dataReadAsJson = JSON.parse(dataRead); 
 
 
-
-	//Add to data
-	var VibinScores =  dataReadAsJson.VibinScores;
-	//console.log('\n\nafter reading--------------');
-
+	
 	//Arrange data to write to later
+	var VibinScores =  dataReadAsJson.VibinScores;
+	
 	var newEntry = {
 		//id
 		viberId:message.author.id,
@@ -349,12 +347,12 @@ function saveWindowEntry(message){
 		),
 		//monthly score
 		vibinScore:elapsedTimeForScore(),
-		timeOfEntry: getCurrentDateAndTimeString()
+		timeOfEntry: new Date()
 	}
 
+	//Add to data
 	console.log('newEntry', newEntry);
 	VibinScores.push(newEntry);
-
 
 	console.log('\ndataReadAsJason:');
 	console.log(dataReadAsJson);
@@ -363,9 +361,8 @@ function saveWindowEntry(message){
 	//write back to json file
 	try {
 		fs.writeFileSync("SavedData.json", JSON.stringify(dataReadAsJson, null, 4) , 'utf8')
-		console.log('file written successfully, data is:');
-		console.log(dataReadAsJson);
-		//file written successfully
+		console.log('file written successfully');
+		// console.log(dataReadAsJson);
 	} catch (err) {
 		console.error(err);
 	}
@@ -379,16 +376,18 @@ function saveWindowEntry(message){
 /*
 	FORMAT: yyyy-m-d HH:MM:SS
 			2018-8-3 11:12:40
-*/
+
 function getCurrentDateAndTimeString() {
 	var today = new Date();
 	var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
 	var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 	var dateTime = date+' '+time;
 
-	return dateTime;
+	// return dateTime;
 	
 }
+*/
+
 function registerVibecheck(message){
 	/*
 	Steps to follow:
