@@ -1,1 +1,27 @@
-{"Users":[{"id":"425904090208534528","person":{"name":"robi","score":0,"id":"425904090208534528"},"monthlyScore":7}],"newString":{"Entries":"new data to enter"}}
+{
+    "VibinScores": [
+        {
+            "viberId": "425904090208534528",
+            "person": {
+                "name": "robi",
+                "score": 0,
+                "id": "425904090208534528"
+            },
+            "vibinScore": 0,
+            "timeOfEntry": "2021-4-19 18:57:1"
+        },
+        {
+            "viberId": "425904090208534528",
+            "person": {
+                "name": "robi",
+                "score": 0,
+                "id": "425904090208534528"
+            },
+            "vibinScore": 0,
+            "timeOfEntry": "2021-4-19 18:57:12"
+        }
+    ],
+    "newString": {
+        "Entries": "new data to enter"
+    }
+}

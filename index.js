@@ -114,8 +114,8 @@ client.on("message", message => { // runs whenever a message is sent
 
 	if (textMessage === "test".toLocaleLowerCase()) {
 		console.log("Function call -  test ____!_ by:",message.author.username);
-
-		testFunction(message);
+		saveWindowEntry(message);
+		
 	}
 	
 
@@ -224,6 +224,8 @@ client.on("message", message => { // runs whenever a message is sent
 		}, timeoutValueInMs);
 
 		message.channel.send(`Vibecheck window closes in:${timeoutValueInMs/1000/60}min`);
+
+		saveWindowEntry(message);
 		
 	}
 
@@ -234,6 +236,7 @@ client.on("message", message => { // runs whenever a message is sent
 		if( vibecheckIsActive ){
 			registerVibecheck(message);
 			message.react('🤙🏾');
+			saveWindowEntry(message);
 		} else{
 			message.react('👎🏾');
 			
@@ -301,74 +304,15 @@ function displayVibeCheckers(message){
 
 //TODO: change the directory of the "SavedData.json" to a folder named data and save it there cuz
 //	if you have more servers running, you'll need to store data for each in a separate file.
-function testFunction(message){
-	// console.log(message.author);
+function saveWindowEntry(message){
+
 	var fs = require("fs");
-
-	//add all entries 	
-	/*
-	var savingData = {
-		Users:{
-			user1:{
-				"id": person1.Id,
-				"person": person1,
-				"monthlyScore":0
-			}
-		}
-	}
-	
-	var newString = { Entries:'new data to enter'};
-	
-	Object.assign(savingData, {
-		newString
-	});
-	*/
-
-	/*
-	var jsonData = System.IO.File.ReadAllText(jsonFile);
-        // De-serialize to object or create new list
-        var employeeList = JsonConvert.DeserializeObject<List<Student>>(jsonData)?? new List<Student>();
-
-        // Add any new employees
-        employeeList.Add(new Student()
-        {
-            Rollnumber = 1,
-            StudentName = "Paja1",
-            Subject = new Subject
-            {
-                Id = 1,
-                Name = "Sub1"
-            }
-        });
-        employeeList.Add(new Student()
-        {
-            Rollnumber = 1,
-            StudentName = "Pera1",
-            Subject = new Subject
-            {
-                Id = 1,
-                Name = "Sub1"
-            }
-        });
-
-        // Update json data string
-        jsonData = JsonConvert.SerializeObject(employeeList,Formatting.Indented);
-        System.IO.File.WriteAllText(jsonFile, jsonData);
-
-		*/
-	
-
-	// var jsonData = JSON.stringify(savingData);
-
-	// console.log('... saving data:')
-	// console.log(savingData);
-
-
 
 	/* guides:
 
 		Readfile
 		Deserialise ( covnvert string to json object)
+		Arrange data to write to later
 		Add to data
 		write back to json file
 	*/
@@ -390,17 +334,13 @@ function testFunction(message){
 
 
 	//Add to data
-	const username = message.author.username.toString();
-
-
-	var Users =  dataReadAsJson.Users;
-	console.log('\n\nafter reading--------------');
+	var VibinScores =  dataReadAsJson.VibinScores;
+	//console.log('\n\nafter reading--------------');
 
 	//Arrange data to write to later
-
 	var newEntry = {
 		//id
-		id:message.author.id,
+		viberId:message.author.id,
 		//person
 		person:new Person(
 			message.author.username.toString(), //name 
@@ -408,11 +348,12 @@ function testFunction(message){
 			message.author.id // user id
 		),
 		//monthly score
-		monthlyScore:7
+		vibinScore:elapsedTimeForScore(),
+		timeOfEntry: getCurrentDateAndTimeString()
 	}
 
 	console.log('newEntry', newEntry);
-	Users.push(newEntry);
+	VibinScores.push(newEntry);
 
 
 	console.log('\ndataReadAsJason:');
@@ -420,24 +361,34 @@ function testFunction(message){
 	
 
 	//write back to json file
-	let json = JSON.stringify(dataReadAsJson);
-	fs.writeFileSync("SavedData.json", json)
-	/*
 	try {
-		const data = fs.writeFileSync("SavedData.json", dataReadAsJson);
+		fs.writeFileSync("SavedData.json", JSON.stringify(dataReadAsJson, null, 4) , 'utf8')
 		console.log('file written successfully, data is:');
 		console.log(dataReadAsJson);
 		//file written successfully
 	} catch (err) {
 		console.error(err);
 	}
-	*/
+	
 	
 	
 
 
 }
 
+/*
+	FORMAT: yyyy-m-d HH:MM:SS
+			2018-8-3 11:12:40
+*/
+function getCurrentDateAndTimeString() {
+	var today = new Date();
+	var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+	var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+	var dateTime = date+' '+time;
+
+	return dateTime;
+	
+}
 function registerVibecheck(message){
 	/*
 	Steps to follow:
