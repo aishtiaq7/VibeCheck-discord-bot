@@ -1,10 +1,17 @@
 {
-  "Users": {
-    "user1": {
+  "Users": [
+    {
       "id": "425904090208534528",
       "person": { "name": "robi", "score": 0, "id": "425904090208534528" },
       "monthlyScore": 0
+    },
+    {
+      "id": "4259040945208534528",
+      "person": { "name": "robi", "score": 0, "id": "425904090208534528" },
+      "monthlyScore": 0
     }
-  },
+  ],
+
+
   "newString": { "Entries": "new data to enter" }
 }

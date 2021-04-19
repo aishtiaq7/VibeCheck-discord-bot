@@ -304,14 +304,6 @@ function testFunction(message){
 	// console.log(message.author);
 	var fs = require("fs");
 
-	const username = message.author.username.toString();
-
-	var person1 = new Person(
-		message.author.username.toString(), //name 
-		elapsedTimeForScore(),	// score from window
-		message.author.id // user id
-	);
-
 	//add all entries 	
 	/*
 	var savingData = {
@@ -380,21 +372,70 @@ function testFunction(message){
 
 		Readfile
 		Deserialise ( covnvert string to json object)
+		Add to data
+		write back to json file
 	*/
 
 	//Readfile
 	var dataRead;
 	try {
 		dataRead = fs.readFileSync("SavedData.json", 'utf8')
-		console.log(dataRead)
-	} catch (err) {
-		console.error(err)
+			console.log('...reading data:');
+			console.log(dataRead)
+			console.log('\n...finished reading')
+		} catch (err) {
+			console.error(err)
+		}
+
+	//Deserialize ( convert string -> object)
+	var dataReadAsJson = JSON.parse(dataRead); 
+
+
+
+	//Add to data
+	const username = message.author.username.toString();
+
+
+	var Users =  dataReadAsJson.Users;
+	console.log('\n\nafter reading--------------');
+
+	//Arrange data to write to later
+
+	var newEntry = {
+		//id
+		id:message.author.id,
+		//person
+		person:new Person(
+			message.author.username.toString(), //name 
+			elapsedTimeForScore(),	// score from window
+			message.author.id // user id
+		),
+		//monthly score
+		monthlyScore:7
 	}
 
-	//Deserialize
-	var myJsonObject = JSON.parse(dataRead);
+	console.log('newEntry', newEntry);
+	Users.push(newEntry);
 
-	//var employeeList = JsonConvert.DeserializeObject<List<Student>>(myJsonObject)
+	//override the Users in your dataReadAsJson
+	//dataReadAsJson.Users.push(newEntry);
+
+	console.log('\ndataReadAsJason:');
+	console.log(dataReadAsJson);
+	
+
+	//write back to json file
+	/*
+	try {
+		const data = fs.writeFileSync("SavedData.json", dataReadAsJson);
+		console.log('file written successfully, data is:');
+		console.log(dataReadAsJson);
+		//file written successfully
+	} catch (err) {
+		console.error(err);
+	}
+	*/
+	
 
 
 }
