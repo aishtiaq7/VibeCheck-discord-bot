@@ -8,6 +8,7 @@ const token = fs.readFileSync("token.txt").toString(); // gets your token from t
 
 //Import other node modules:
 let {Person} = require('./vibecheck_scoreCard.js') ;
+const { type } = require("os");
 //var person1 = new Person('Awshaf');
 //console.log(person1);
 
@@ -114,33 +115,7 @@ client.on("message", message => { // runs whenever a message is sent
 	if (textMessage === "test".toLocaleLowerCase()) {
 		console.log("Function call -  test ____!_ by:",message.author.username);
 
-		// console.log(message.author);
-
-		var fs = require("fs");
-
-		const username = message.author.username.toString();
-
-		var person1 = new Person(
-			message.author.username.toString(), 
-			elapsedTimeForScore(),
-			message.author.id
-		);
-	
-
-		var data = person1;
-
-		var jsonData = JSON.stringify(data);
-
-		console.log('... saving data:')
-		console.log(data);
-
-		fs.appendFile("SavedData.json", jsonData, function (err, data) {
-		if (err) {
-			console.log("error in Saving data locally");
-			return console.log(err);
-		}
-		console.log('\tsaved!');
-		});
+		testFunction(message);
 	}
 	
 
@@ -323,8 +298,106 @@ function displayVibeCheckers(message){
 	message.channel.send(replyString);
 	// console.log(vibeCheckers);
 }
+//TODO: change the directory of the "SavedData.json" to a folder named data and save it there cuz
+//	if you have more servers running, you'll need to store data for each in a separate file.
+function testFunction(message){
+	// console.log(message.author);
+	var fs = require("fs");
+
+	const username = message.author.username.toString();
+
+	var person1 = new Person(
+		message.author.username.toString(), //name 
+		elapsedTimeForScore(),	// score from window
+		message.author.id // user id
+	);
+
+	//add all entries 	
+	/*
+	var savingData = {
+		Users:{
+			user1:{
+				"id": person1.Id,
+				"person": person1,
+				"monthlyScore":0
+			}
+		}
+	}
+	
+	var newString = { Entries:'new data to enter'};
+	
+	Object.assign(savingData, {
+		newString
+	});
+	*/
+
+	//READING THE FILE:
+	// let json = require('./SavedData.json');
+	// console.log(json, 'the json obj');
+	
+	/*
+	var jsonData = System.IO.File.ReadAllText(jsonFile);
+        // De-serialize to object or create new list
+        var employeeList = JsonConvert.DeserializeObject<List<Student>>(jsonData)?? new List<Student>();
+
+        // Add any new employees
+        employeeList.Add(new Student()
+        {
+            Rollnumber = 1,
+            StudentName = "Paja1",
+            Subject = new Subject
+            {
+                Id = 1,
+                Name = "Sub1"
+            }
+        });
+        employeeList.Add(new Student()
+        {
+            Rollnumber = 1,
+            StudentName = "Pera1",
+            Subject = new Subject
+            {
+                Id = 1,
+                Name = "Sub1"
+            }
+        });
+
+        // Update json data string
+        jsonData = JsonConvert.SerializeObject(employeeList,Formatting.Indented);
+        System.IO.File.WriteAllText(jsonFile, jsonData);
+
+		*/
+	
+
+	// var jsonData = JSON.stringify(savingData);
+
+	// console.log('... saving data:')
+	// console.log(savingData);
 
 
+
+	/* guides:
+
+		Readfile
+		Deserialise ( covnvert string to json object)
+	*/
+
+	//Readfile
+	var dataRead;
+	try {
+		dataRead = fs.readFileSync("SavedData.json", 'utf8')
+		console.log(dataRead)
+	} catch (err) {
+		console.error(err)
+	}
+
+	//Deserialize
+	var myJsonObject = JSON.parse(dataRead);
+
+	//var employeeList = JsonConvert.DeserializeObject<List<Student>>(myJsonObject)
+
+
+}
 
 function registerVibecheck(message){
 	/*
