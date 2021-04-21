@@ -114,7 +114,7 @@ client.on("message", message => { // runs whenever a message is sent
 
 	if (textMessage === "test".toLocaleLowerCase()) {
 		console.log("Function call -  test ____!_ by:",message.author.username);
-		saveWindowEntry(message);
+		//saveWindowEntry(message);
 		
 	}
 	
@@ -225,7 +225,7 @@ client.on("message", message => { // runs whenever a message is sent
 
 		message.channel.send(`Vibecheck window closes in:${timeoutValueInMs/1000/60}min`);
 
-		saveWindowEntry(message);
+		//saveWindowEntry(message);
 		
 	}
 
@@ -236,7 +236,7 @@ client.on("message", message => { // runs whenever a message is sent
 		if( vibecheckIsActive ){
 			registerVibecheck(message);
 			message.react('🤙🏾');
-			saveWindowEntry(message);
+			//saveWindowEntry(message);
 		} else{
 			message.react('👎🏾');
 			
