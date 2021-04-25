@@ -16,7 +16,6 @@ const { type } = require("os");
 
 //			-------- FIREBASE -------------
 
-console.log('...initialize firebase')
 var firebase = require('firebase');
 
 var firebaseConfig = {
@@ -33,53 +32,10 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-console.log('...initializing firebase DONE')
-var db = firebase.database();
 
-/* **********************************************************
-                            READ
-    **********************************************************
-*/ 
-/*
-    Reads data asynchronously with the 'path' argument specified. 
-    RETURNING A PROMISE.
-    
-    Ex path can be: /vibinScores/allEntries/112/
-*/
-function readData (path){
-    var ref = db.ref(path); 
-
-    return ref.once("value", function(snapshot) {
-        // console.log('\n-----fetched data:\n');
-        console.log('\tReading: '+path);
-        console.log(snapshot.val());
-        return snapshot.val();
-    }, function (errorObject) {
-        console.log("The read failed: " + errorObject.code);
-    })
-    .then( snap =>{
-            return snap.val();
-        })
-}
-var promise = readData('vibinScores/allEntries');
-promise.then( dataReceived => {
-    console.log('\n-----promise call returned:\n');
-    console.log(dataReceived);
-    return dataReceived;
-    })
-    // .then( data =>{
-    //     for (let [key, value] of Object.entries(data)) {
-    //         console.log(`key: value`);
-    //         console.log(key);
-    //         console.log(value);
-
-    //     }
-    // })
+//	      -------- FIREBASE ------------- Function definition at the bottom
 
 
-
-//*************************************** */
-//-------------------------------- firebase end
 
 
 client.once("ready", () => { 
@@ -108,7 +64,7 @@ var vibecheckIsActive = false; // tracker for vibecheck window to allow ppl to v
 var startTime, endTime;
 var timeDiff;
 
-var timeoutValueInMs = 15 * ( 60 * 1000 ) ; // window to responds to 'vibecheck @everyone'
+var timeoutValueInMs = 12 * ( 60 * 1000 ) ; // window to responds to 'vibecheck @everyone'
 
 function start() {
 	startTime = new Date();
@@ -303,10 +259,11 @@ client.on("message", message => { // runs whenever a message is sent
 		if( vibecheckIsActive ){
 			registerVibecheck(message);
 			message.react('🤙🏾');
-			//saveWindowEntry(message);
+			saveDataToFirebase(message);
+
 		} else{
 			message.react('👎🏾');
-			
+			// saveDataToFirebase(message);
 			console.log('vibin NOT registered due to expired time');
 		}
 	
@@ -366,7 +323,49 @@ function displayVibeCheckers(message){
 
 	console.log(replyString);
 	message.channel.send(replyString);
-	// console.log(vibeCheckers);
+
+
+
+
+
+}
+
+function saveDataToFirebase(message) {
+
+			/*
+				Writes 'dataToWrite' json object to your 'reference' under 'childId' node. 
+
+				Pattern example: 
+				vibinScores{ // <---- reference
+						allEntries{
+							//123456: // <---- childID
+							{
+								...
+								..obj   <---- dataToWrite
+							}
+						}
+				}
+			
+			function registerVibinScores( reference, childId, dataToWrite){
+			*/
+			var currentDate = new Date();
+			var vibinScoreObj = {
+				
+				viberId:message.author.id, //id
+				
+				person:new Person(  //person
+					message.author.username.toString(), //name 
+					elapsedTimeForScore(),	// score from window
+					message.author.id // user id
+					),
+					
+				timeOfEntry: currentDate.toString(), 
+
+				vibinScore:elapsedTimeForScore(),  //score
+
+			}
+			const path = 'vibinScores/allEntries';
+			saveEachVibinScores ( path, currentDate.getTime(), vibinScoreObj )
 }
 
 //TODO: change the directory of the "SavedData.json" to a folder named data and save it there cuz
@@ -531,4 +530,89 @@ function plTableCommandFunction(){
 	})
 
 }
+
+
+
+
+var db = firebase.database();
+
+/* **********************************************************
+                            READ
+    **********************************************************
+*/ 
+/*
+    Reads data asynchronously with the 'path' argument specified. 
+    RETURNING A PROMISE.
+    
+    Ex path can be: /vibinScores/allEntries/112/
+*/
+function readData (path){
+    var ref = db.ref(path); 
+
+    return ref.once("value", function(snapshot) {
+        // console.log('\n-----fetched data:\n');
+        console.log('\tReading: '+path);
+        console.log(snapshot.val());
+        return snapshot.val();
+    }, function (errorObject) {
+        console.log("The read failed: " + errorObject.code);
+    })
+    .then( snap =>{
+            return snap.val();
+        })
+}
+/*
+var promise = readData('vibinScores/allEntries');
+promise.then( dataReceived => {
+    console.log('\n-----promise call returned:\n');
+    console.log(dataReceived);
+    return dataReceived;
+    })
+    // .then( data =>{
+    //     for (let [key, value] of Object.entries(data)) {
+    //         console.log(`key: value`);
+    //         console.log(key);
+    //         console.log(value);
+
+    //     }
+    // })
+*/
+
+/* **********************************************************
+                            Firebase- Write
+    **********************************************************
+*/ 
+/*
+    Writes 'dataToWrite' json object to your 'reference' under 'childId' node. 
+
+    Pattern example: 
+    vibinScores{ // <---- reference
+            allEntries{
+                //123456: // <---- childID
+                {
+                    ...
+                    ..obj   <---- dataToWrite
+                }
+            }
+    }
+*/
+function saveEachVibinScores( reference, childId, dataToWrite){
+
+    //convertes reference to string if not string
+    if((typeof reference) != 'string'){
+        reference = reference.toString();
+    }
+	
+	console.log('...writing to path:' + reference +' with dataToWrite:');
+	console.log(dataToWrite);
+
+    var ref = db.ref(reference); //vibinScores
+    usersRef = ref.child(childId);
+    usersRef.set(
+        dataToWrite
+    );
+
+}
+
+
 
