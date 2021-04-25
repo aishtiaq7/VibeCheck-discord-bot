@@ -12,12 +12,79 @@ const { type } = require("os");
 //var person1 = new Person('Awshaf');
 //console.log(person1);
 
-//--------------------------------
+
+
+//			-------- FIREBASE -------------
+
+console.log('...initialize firebase')
+var firebase = require('firebase');
+
+var firebaseConfig = {
+	apiKey: "AIzaSyBJ8-p0-jZUEKFx5eKnpHgYOxBQ4dwcvr4",
+    authDomain: "vibecheck-discord-bot.firebaseapp.com",
+    databaseURL: "https://vibecheck-discord-bot-default-rtdb.firebaseio.com",
+    projectId: "vibecheck-discord-bot",
+    storageBucket: "vibecheck-discord-bot.appspot.com",
+    messagingSenderId: "946523489068",
+    appId: "1:946523489068:web:bf6dc1cab8fafbd9922289",
+    measurementId: "G-5Y9H17PS13"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+console.log('...initializing firebase DONE')
+var db = firebase.database();
+
+/* **********************************************************
+                            READ
+    **********************************************************
+*/ 
+/*
+    Reads data asynchronously with the 'path' argument specified. 
+    RETURNING A PROMISE.
+    
+    Ex path can be: /vibinScores/allEntries/112/
+*/
+function readData (path){
+    var ref = db.ref(path); 
+
+    return ref.once("value", function(snapshot) {
+        // console.log('\n-----fetched data:\n');
+        console.log('\tReading: '+path);
+        console.log(snapshot.val());
+        return snapshot.val();
+    }, function (errorObject) {
+        console.log("The read failed: " + errorObject.code);
+    })
+    .then( snap =>{
+            return snap.val();
+        })
+}
+var promise = readData('vibinScores/allEntries');
+promise.then( dataReceived => {
+    console.log('\n-----promise call returned:\n');
+    console.log(dataReceived);
+    return dataReceived;
+    })
+    // .then( data =>{
+    //     for (let [key, value] of Object.entries(data)) {
+    //         console.log(`key: value`);
+    //         console.log(key);
+    //         console.log(value);
+
+    //     }
+    // })
+
+
+
+//*************************************** */
+//-------------------------------- firebase end
 
 
 client.once("ready", () => { 
 	
-	console.log('deployed from main branch..')
+	console.log('deployed from mainFeature - branch..')
 	
 	
 	console.log("Ready!");
