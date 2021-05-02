@@ -145,6 +145,7 @@ client.on("message", message => { // runs whenever a message is sent
     }
 
 	if ( textMessage === "Vibecheck bol".toLocaleLowerCase() ){
+		console.log("Function call -  Vibecheck bol ____!_ by:", message.author.username);
 		const string = "Vibecheck khankirpola " + message.author.username;
 		message.channel.send(string);
 	}
