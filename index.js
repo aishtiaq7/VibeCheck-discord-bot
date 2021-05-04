@@ -9,19 +9,28 @@ const football_x_auth_token = process.env.FOOTBALL_X_AUTH_TOKEN // fetch api key
 //Import other node modules:
 let {Person} = require('./vibecheck_scoreCard.js') ;
 
+const fb_api_key = process.env.FIREBASE_API_KEY
+const fb_auth_domain = process.env.FIREBASE_AUTH_DOMAIN
+const fb_database_url = process.env.FIREBASE_DATABAS_URL
+const fb_project_id= process.env.FIREBASE_PROJECT_ID
+const fb_storage_bucket= process.env.FIREBASE_STORAGE_BUCKET
+const fb_messaging_sender_id = process.env.FIREBASE_MESSAGING_SENDER_ID
+const fb_app_id = process.env.FIREBASE_APP_ID
+const fb_measurement_id= process.env.FIREBASE_MEASUREMENT_ID
+
 
 //---------------- FIREBASE ------------- : Function definition at the bottom
 var firebase = require('firebase');
 const { type } = require("os");
 var firebaseConfig = {
-	apiKey: "AIzaSyBJ8-p0-jZUEKFx5eKnpHgYOxBQ4dwcvr4",
-    authDomain: "vibecheck-discord-bot.firebaseapp.com",
-    databaseURL: "https://vibecheck-discord-bot-default-rtdb.firebaseio.com",
-    projectId: "vibecheck-discord-bot",
-    storageBucket: "vibecheck-discord-bot.appspot.com",
-    messagingSenderId: "946523489068",
-    appId: "1:946523489068:web:bf6dc1cab8fafbd9922289",
-    measurementId: "G-5Y9H17PS13"
+	apiKey: fb_api_key,
+    authDomain: fb_auth_domain,
+    databaseURL: fb_database_url,
+    projectId: fb_project_id,
+    storageBucket: fb_storage_bucket,
+    messagingSenderId: fb_messaging_sender_id,
+    appId: fb_app_id,
+    measurementId: fb_measurement_id
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
