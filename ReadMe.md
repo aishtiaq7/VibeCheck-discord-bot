@@ -35,4 +35,4 @@ TODO:
 
 # TODO: #
 * Register total points for users in different servers (guilds)
-* 
+* Register playlist choices to play later.

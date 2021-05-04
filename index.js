@@ -23,6 +23,7 @@ const fb_measurement_id= process.env.FIREBASE_MEASUREMENT_ID
 //---------------- FIREBASE ------------- : Function definition at the bottom
 var firebase = require('firebase');
 const { type } = require("os");
+const { send } = require("process");
 var firebaseConfig = {
 	apiKey: fb_api_key,
     authDomain: fb_auth_domain,
@@ -38,11 +39,10 @@ firebase.initializeApp(firebaseConfig);
 //----------------------------------------
 
 
+client.once("ready", () => {
 
-client.once("ready", () => { 
-	
 	console.log('deployed from mainFeature - branch..') // WARNING: its hard coated
-	
+
 	console.log("Ready!");
 	console.log('__npm start at:');
 	var today = new Date();
@@ -54,9 +54,23 @@ client.once("ready", () => {
 	console.log(time);
 	console.log('\n');
 
+
+	console.log('trigginer call...')
+	// client.on("message", "test");
+
+	//   		==>> Error
+	const channelId = "839029246567252000";
+	const sendMsg = 'hello';
+	client.channels.fetch(channelId).then(channel => {
+		// console.log()("your message here");
+		channel.send(sendMsg);
+		console.log(`msg:${sendMsg}\nsend to channelID:${channelId}`);
+	})
+	
+
 });
 
-client.login(discord_token); // starts the bot up 
+client.login(discord_token); // starts the bot up
 
 
 var vibeCheckers =[];
@@ -83,12 +97,12 @@ function elapsedTimeForScore() {
 	/*
 			mins to seconds
 			1s = 1000ms
-			1m = 60 x 1000ms 
+			1m = 60 x 1000ms
 			15m = 15 x ( 60 x 1000 )ms
-			
+
 	*/
 	var score = Math.floor( (1 -(timeScore/ (timeoutValueInMs/1000)) ) *100 );
-	
+
 	return score;
 }
 
@@ -98,11 +112,11 @@ function end() {
 	// strip the ms
 	timeDiff /= 1000;
 
-	// get seconds 
+	// get seconds
 	var seconds = Math.round(timeDiff);
 	console.log(seconds + " seconds window ran");
 
-		
+
 	// // get seconds (Original had 'round' which incorrectly counts 0:28, 0:29, 1:30 ... 1:59, 1:0)
 	// var seconds = Math.round(timeDiff % 60);
 
@@ -133,15 +147,17 @@ client.on("message", message => { // runs whenever a message is sent
 	var textMessage = message.content;
 	textMessage = textMessage.toLowerCase();
 
+	// textMessage = 'test';	
+
+
 	if (textMessage === "test".toLocaleLowerCase()) {
 		console.log("Function call -  test ____!_ by:", message.author.username);
-
 		/*
-		TOTAL SCORE: -- should be when 'vibin'
-			(check if user already registered in db>guild)?
-				(read data + update count) : enter data
-		
+
+			== Read + Search;
+
 		*/
+
 
 		const path= 'vibinScores/allEntries/1620057063896';
 		var dataPromise = readData(path);
@@ -153,10 +169,13 @@ client.on("message", message => { // runs whenever a message is sent
 			.then(data=>{
 				console.log(data);
 			});
+
+
+
 	}
-	
+
     if (textMessage === "Vibecheck me".toLocaleLowerCase() ) {
-		
+
 		console.log("Function call -  Vibecheck me ____!_ by:", message.author.username)
 		//Vibechecks wither username
 		const username = message.author.username;
@@ -180,12 +199,12 @@ client.on("message", message => { // runs whenever a message is sent
 				console.log('no response so no reply.');
 				message.channel.send(response);
 			}
-			
+
 		})
 		.catch(err =>{
 			console.log(err);
 		})
-	} 
+	}
 
 	if ( textMessage === "ucl".toLocaleLowerCase() ){
 
@@ -211,7 +230,7 @@ client.on("message", message => { // runs whenever a message is sent
 
 		})
 		.catch(err => {
-			console.error(err); 
+			console.error(err);
 		});
 
 	}
@@ -220,8 +239,8 @@ client.on("message", message => { // runs whenever a message is sent
 
 		console.log("vc @everyone - function call ______!_ by:", message.author.username)
 		vibecheckIsActive = true;
-		
-		start(); // starts clock 
+
+		start(); // starts clock
 
 		setTimeout( ()=>{
 			vibecheckIsActive = false;
@@ -235,7 +254,7 @@ client.on("message", message => { // runs whenever a message is sent
 
 		message.channel.send(`Vibecheck window closes in:${timeoutValueInMs/1000/60}min`);
 
-		
+
 	}
 
 	if ( textMessage === "vibin".toLocaleLowerCase() ){
@@ -248,10 +267,11 @@ client.on("message", message => { // runs whenever a message is sent
 			saveDataToFirebase(message);
 		} else{
 			message.react('👎🏾');
-			// saveDataToFirebase(message);
-			console.log('vibin NOT registered due to expired time');
+			console.log('vibin NOT registered');
+
+
 		}
-	
+
 	}
 });
 
@@ -259,7 +279,7 @@ function changeTimeZone( dateToChange){ //Changes time to BANGLADESH TIME
 
     const changeThisDate = new Date(dateToChange);
     const options = {
-        // day: '2-digit', month: '2-digit', year: '2-digit',  
+        // day: '2-digit', month: '2-digit', year: '2-digit',
         // hour: '2-digit', minute: '2-digit', second: '2-digit',
         timeZone: 'Asia/Dhaka',
         // timeZoneName: 'short',
@@ -268,8 +288,8 @@ function changeTimeZone( dateToChange){ //Changes time to BANGLADESH TIME
         hour12: true,
     }
     const formatter = new Intl.DateTimeFormat('en-GB', options)
-    const dateInNewTimezone = formatter.format(changeThisDate) 
-    
+    const dateInNewTimezone = formatter.format(changeThisDate)
+
     return dateInNewTimezone;
 }
 
@@ -287,7 +307,7 @@ function uclFetchFunction() {
 }
 function displayVibeCheckers(message){
 	//vibeCheckers <---- this is an array containing the people who vibechecked
-	
+
 	if( vibeCheckers.length == 0){
 		message.channel.send('No one vibechecked in the given time :( ');
 		return;
@@ -301,9 +321,9 @@ function displayVibeCheckers(message){
 }
 
 /*
-	Writes 'dataToWrite' json object to your 'reference' under 'childId' node. 
+	Writes 'dataToWrite' json object to your 'reference' under 'childId' node.
 
-	Pattern example: 
+	Pattern example:
 	vibinScores{ // <---- reference
 			allEntries{
 				//123456: // <---- childID
@@ -317,16 +337,16 @@ function displayVibeCheckers(message){
 function saveDataToFirebase(message) {
 	var currentDate = new Date();
 	var vibinScoreObj = {
-		
+
 		viberId:message.author.id, //id
-		
+
 		person:new Person(  //person
-			message.author.username.toString(), //name 
+			message.author.username.toString(), //name
 			elapsedTimeForScore(),	// score from window
 			message.author.id // user id
 			),
-			
-		timeOfEntry: currentDate.toString(), 
+
+		timeOfEntry: currentDate.toString(),
 		vibinScore:elapsedTimeForScore(),  //score
 
 	}
@@ -346,20 +366,20 @@ function registerVibecheck(message){
 	-When vibecheck time runs out
 		Pop the array to display the vibecheckers with score
 	*/
-	
+
 	const username = message.author.username.toString();
 	var person1 = new Person(
-		message.author.username.toString(), 
+		message.author.username.toString(),
 		elapsedTimeForScore(),
 		message.author.username.id);
-	
+
 
 	function checkAvailability(vibecheckers, username) {
 		return vibecheckers.some(person => person.Name === username);
 	}
-	
+
 	personExists= checkAvailability(vibeCheckers, username );
-	
+
 	if ( !personExists ){
 		vibeCheckers.push(
 			person1
@@ -388,13 +408,13 @@ function plTableCommandFunction(){
 		printArray.push('\tTeam\t\t\tPlayed | Pts')
 		for ( var i=0 ; i< count; i++){
 			printString = `${response.standings[0].table[i].position}:${response.standings[0].table[i].team.name}`;
-			
+
 			printString +="\t\t";
 			if(response.standings[0].table[i].team.name.length < 14){
 				printString +="\t";
 			}
 			printString +=`${response.standings[0].table[i].playedGames} | ${response.standings[0].table[i].points}`;
-			
+
 			printArray.push(printString);
 		}
 		return printArray.join('\n');
@@ -407,27 +427,27 @@ var db = firebase.database();  // FIREBASE Database Function Definitions
 /* **********************************************************
 						Firebase - READ
     **********************************************************
-*/ 
+*/
 
 
 /*
-    Reads data asynchronously with the 'path' argument specified. 
+    Reads data asynchronously with the 'path' argument specified.
     RETURNING A PROMISE with the snapshot of the node specified.
-    
+
     Ex path can be: /vibinScores/allEntries/112/
 */
 function readData (path){
-    var ref = db.ref(path); 
+    var ref = db.ref(path);
 
     return ref.once("value", function(snapshot) {
         // console.log('\n-----fetched data:\n');
         console.log('\tReading @: '+path);
-        console.log(snapshot.val());
+        // console.log(snapshot.val());
         return snapshot.val();
     }, function (errorObject) {
         console.log("The read failed: " + errorObject.code);
     }).then(res=>{
-		console.log('here');
+		// console.log('returnig readData f.call');
 		return res.val();
 	})
 }
@@ -436,11 +456,11 @@ function readData (path){
 /* **********************************************************
 						Firebase - Write
     **********************************************************
-*/ 
+*/
 /*
-    Writes 'dataToWrite' json object to your 'reference' under 'childId' node. 
+    Writes 'dataToWrite' json object to your 'reference' under 'childId' node.
 
-    Pattern example: 
+    Pattern example:
     vibinScores{ // <---- reference
             allEntries{
                 //123456: // <---- childID
@@ -457,7 +477,7 @@ function saveEachVibinScores( reference, childId, dataToWrite){
     if((typeof reference) != 'string'){
         reference = reference.toString();
     }
-	
+
 	console.log('...writing to path:' + reference +' with dataToWrite:');
 	console.log(dataToWrite);
 
