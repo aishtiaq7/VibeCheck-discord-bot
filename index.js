@@ -5,7 +5,7 @@ const client = new Discord.Client(); // creates a discord client
 
 require('dotenv').config() // for hiding tokens and keys
 const discord_token = process.env.DISCORD_TOKEN; // discord token
-
+const football_x_auth_token = process.env.FOOTBALL_X_AUTH_TOKEN // fetch api key
 //Import other node modules:
 let {Person} = require('./vibecheck_scoreCard.js') ;
 
@@ -260,7 +260,7 @@ function uclFetchFunction() {
 	console.log('inside uclFetchFunciton');
 
 	return fetch("https://api.football-data.org/v2/competitions/CL/matches", {
-			headers: { 'X-Auth-Token': '06d819b33cd245fc89707771ad9759a2' },
+			headers: { 'X-Auth-Token': football_x_auth_token },
 			url: 'https://api.football-data.org/v2/competitions/CL/matches',
 			dataType: 'json',
 			type: 'GET',
@@ -361,7 +361,7 @@ function registerVibecheck(message){
 function plTableCommandFunction(){
 
 	return fetch("http://api.football-data.org/v2/competitions/2021/standings", {
-		headers: { 'X-Auth-Token': '06d819b33cd245fc89707771ad9759a2' },
+		headers: { 'X-Auth-Token': football_x_auth_token},
 		url: 'https://api.football-data.org/v2/competitions/CL/matches',
 		dataType: 'json',
 		type: 'GET',
