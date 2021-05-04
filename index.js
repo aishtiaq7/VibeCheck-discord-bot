@@ -6,7 +6,7 @@ const client = new Discord.Client(); // creates a discord client
 require('dotenv').config() // for hiding tokens and keys
 const discord_token = process.env.DISCORD_TOKEN; // discord token
 
-//Import other node modules:
+//Import other node modules: 
 let {Person} = require('./vibecheck_scoreCard.js') ;
 
 
