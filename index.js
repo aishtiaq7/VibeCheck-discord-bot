@@ -7,7 +7,7 @@ const token = fs.readFileSync("token.txt").toString(); // gets your token from t
 
 //Import other node modules:
 let {Person} = require('./vibecheck_scoreCard.js') ;
-const { type } = require("os");
+const { type } = require("os"); 
 
 
 //---------------- FIREBASE ------------- : Function definition at the bottom
@@ -127,8 +127,6 @@ client.on("message", message => { // runs whenever a message is sent
 
 	if (textMessage === "test".toLocaleLowerCase()) {
 		console.log("Function call -  test ____!_ by:", message.author.username);
-		//saveWindowEntry(message);
-		
 	}
 	
 
@@ -217,7 +215,7 @@ client.on("message", message => { // runs whenever a message is sent
 
 		message.channel.send(`Vibecheck window closes in:${timeoutValueInMs/1000/60}min`);
 
-		//saveWindowEntry(message); TODO: remove the code for saving data locally to SavedData.txt
+		
 	}
 
 	if ( textMessage === "vibin".toLocaleLowerCase() ){
@@ -321,76 +319,6 @@ function saveDataToFirebase(message) {
 	saveEachVibinScores ( path, currentDate.getTime(), vibinScoreObj )
 }
 
-//TODO: change the directory of the "SavedData.json" to a folder named data and save it there cuz
-//	if you have more servers running, you'll need to store data for each in a separate file.
-function saveWindowEntry(message){
-
-	var fs = require("fs");
-
-	/* guides:
-
-		Readfile
-		Deserialise ( covnvert string to json object)
-		Arrange data to write to later
-		Add to readData
-		write back to json file
-	*/
-
-	//Readfile
-	var dataRead;
-	try {
-		dataRead = fs.readFileSync("SavedData.json", 'utf8')
-			// console.log('...reading data:');
-			// console.log(dataRead)
-			// console.log('\n...finished reading')
-		} catch (err) {
-			console.error(err)
-		}
-
-	//Deserialize ( convert string -> object)
-	var dataReadAsJson = JSON.parse(dataRead); 
-
-
-	
-	//Arrange data to write to later
-	var VibinScores =  dataReadAsJson.VibinScores;
-	
-	var newEntry = {
-		//id
-		viberId:message.author.id,
-		//person
-		person:new Person(
-			message.author.username.toString(), //name 
-			elapsedTimeForScore(),	// score from window
-			message.author.id // user id
-		),
-		//monthly score
-		vibinScore:elapsedTimeForScore(),
-		timeOfEntry: new Date()
-	}
-
-	//Add to data
-	console.log('newEntry', newEntry);
-	VibinScores.push(newEntry);
-
-	console.log('\ndataReadAsJason:');
-	console.log(dataReadAsJson);
-	
-
-	//write back to json file
-	try {
-		fs.writeFileSync("SavedData.json", JSON.stringify(dataReadAsJson, null, 4) , 'utf8')
-		console.log('file written successfully');
-		// console.log(dataReadAsJson);
-	} catch (err) {
-		console.error(err);
-	}
-	
-	
-	
-
-
-}
 
 
 function registerVibecheck(message){
@@ -490,22 +418,7 @@ function readData (path){
             return snap.val();
         })
 }
-/*
-var promise = readData('vibinScores/allEntries');
-promise.then( dataReceived => {
-    console.log('\n-----promise call returned:\n');
-    console.log(dataReceived);
-    return dataReceived;
-    })
-    // .then( data =>{
-    //     for (let [key, value] of Object.entries(data)) {
-    //         console.log(`key: value`);
-    //         console.log(key);
-    //         console.log(value);
 
-    //     }
-    // })
-*/
 
 /* **********************************************************
 						Firebase - Write
