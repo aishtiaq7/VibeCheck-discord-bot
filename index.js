@@ -2,14 +2,13 @@ const fetch = require("node-fetch");
 const Discord = require("discord.js"); // imports the discord library
 const fs = require("fs"); // imports the file io library
 const client = new Discord.Client(); // creates a discord client
-require('dotenv').config() // for hiding tokens and keys
 
-// const discord_token = process.env.DISCORD_TOKEN; // discord token
+require('dotenv').config() // for hiding tokens and keys
 const discord_token = process.env.DISCORD_TOKEN; // discord token
 
 //Import other node modules:
 let {Person} = require('./vibecheck_scoreCard.js') ;
-// const { type } = require("os"); 
+
 
 //---------------- FIREBASE ------------- : Function definition at the bottom
 var firebase = require('firebase');
