@@ -3,12 +3,13 @@ const Discord = require("discord.js"); // imports the discord library
 const fs = require("fs"); // imports the file io library
 const client = new Discord.Client(); // creates a discord client
 
+let {Person} = require('./vibecheck_scoreCard.js') ; //Import other node modules:
+
 require('dotenv').config() // for hiding tokens and keys
 const discord_token = process.env.DISCORD_TOKEN; // discord token
 const football_x_auth_token = process.env.FOOTBALL_X_AUTH_TOKEN // fetch api key
-//Import other node modules:
-let {Person} = require('./vibecheck_scoreCard.js') ;
 
+//Firebase Tokens
 const fb_api_key = process.env.FIREBASE_API_KEY
 const fb_auth_domain = process.env.FIREBASE_AUTH_DOMAIN
 const fb_database_url = process.env.FIREBASE_DATABAS_URL
@@ -32,10 +33,9 @@ var firebaseConfig = {
     appId: fb_app_id,
     measurementId: fb_measurement_id
 };
-// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-//---------------- FIREBASE config end
+//----------------------------------------
 
 
 
@@ -80,7 +80,6 @@ function elapsedTimeForScore() {
 	var timeScore = timeSoFar - startTime;
 
 	timeScore /= 1000; //strip ms;
-
 	/*
 			mins to seconds
 			1s = 1000ms
@@ -88,7 +87,6 @@ function elapsedTimeForScore() {
 			15m = 15 x ( 60 x 1000 )ms
 			
 	*/
-
 	var score = Math.floor( (1 -(timeScore/ (timeoutValueInMs/1000)) ) *100 );
 	
 	return score;
@@ -139,7 +137,6 @@ client.on("message", message => { // runs whenever a message is sent
 		console.log("Function call -  test ____!_ by:", message.author.username);
 	}
 	
-
     if (textMessage === "Vibecheck me".toLocaleLowerCase() ) {
 		
 		console.log("Function call -  Vibecheck me ____!_ by:", message.author.username)
@@ -147,9 +144,7 @@ client.on("message", message => { // runs whenever a message is sent
 		const username = message.author.username;
         const vibeCheckString = "VibeChecked " + username; // generates a random number
         message.channel.send(vibeCheckString); // sends a message to the channel with the number
-
 		message.react('👋🏼');
-
     }
 
 	if ( textMessage === "Vibecheck bol".toLocaleLowerCase() ){
@@ -159,7 +154,6 @@ client.on("message", message => { // runs whenever a message is sent
 	}
 
 	if ( textMessage === "pl table".toLocaleLowerCase() ){
-
 		plTableCommandFunction()
 		.then( response =>{
 			console.log('after function call log:');
@@ -178,10 +172,8 @@ client.on("message", message => { // runs whenever a message is sent
 	if ( textMessage === "ucl".toLocaleLowerCase() ){
 
 		console.log("ucl function call ______!_ by:", message.author.username)
-
 		uclFetchFunction()
 		.then((response) => {
-
 			var matchString ="@Bangladesh Standard Time:\n";
 			response.matches.forEach(element => {
                 if( element.status == "SCHEDULED"){
@@ -236,7 +228,6 @@ client.on("message", message => { // runs whenever a message is sent
 			registerVibecheck(message);
 			message.react('🤙🏾');
 			saveDataToFirebase(message);
-
 		} else{
 			message.react('👎🏾');
 			// saveDataToFirebase(message);
@@ -283,13 +274,10 @@ function displayVibeCheckers(message){
 		message.channel.send('No one vibechecked in the given time :( ');
 		return;
 	}
-
 	var replyString = 'Good vibes:\n';
-
 	vibeCheckers.forEach( person=> {
 		replyString += `${person.Name}\t\t\t${person.Score}pts\n`
 	})
-
 	console.log(replyString);
 	message.channel.send(replyString);
 }
@@ -321,7 +309,6 @@ function saveDataToFirebase(message) {
 			),
 			
 		timeOfEntry: currentDate.toString(), 
-
 		vibinScore:elapsedTimeForScore(),  //score
 
 	}
@@ -343,7 +330,6 @@ function registerVibecheck(message){
 	*/
 	
 	const username = message.author.username.toString();
-
 	var person1 = new Person(
 		message.author.username.toString(), 
 		elapsedTimeForScore(),
@@ -356,7 +342,6 @@ function registerVibecheck(message){
 	
 	personExists= checkAvailability(vibeCheckers, username );
 	
-
 	if ( !personExists ){
 		vibeCheckers.push(
 			person1
@@ -381,7 +366,7 @@ function plTableCommandFunction(){
 		var printArray = [];
 		var printString = "";
 		var count =10;  // Max num of top teams to be displayed
-
+		
 		printArray.push('\tTeam\t\t\tPlayed | Pts')
 		for ( var i=0 ; i< count; i++){
 			printString = `${response.standings[0].table[i].position}:${response.standings[0].table[i].team.name}`;

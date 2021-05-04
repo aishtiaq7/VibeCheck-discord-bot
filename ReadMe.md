@@ -2,12 +2,12 @@
 
 # Implemented Commands: #
 * 'Vibecheck me' - Vibechecks back the sender
-* 'vibecheck @everyone' - Open a 15min window to vibe back using 'vibin' - command
-* 'ucl' - Prints the upcoming UCL mathces
+* 'vibecheck @everyone' - Open a X-min window to vibe back using 'vibin' - command
+* 'ucl' - Prints the upcoming UCL mathces in local time
 * 'pl table' - Prints the top 10 Premier League teams in the current league table
 
 TODO:
-* Hide your token key with .gitignore?? Token needed in heroku
+* 
 
 
 # Screenshots # 
@@ -33,3 +33,6 @@ TODO:
   <img src="./screenshots/pl table.PNG" width="350" >
 </p>
 
+# TODO: #
+* Register total points for users in different servers (guilds)
+* 
