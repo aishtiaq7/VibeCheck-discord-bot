@@ -135,6 +135,24 @@ client.on("message", message => { // runs whenever a message is sent
 
 	if (textMessage === "test".toLocaleLowerCase()) {
 		console.log("Function call -  test ____!_ by:", message.author.username);
+
+		/*
+		TOTAL SCORE: -- should be when 'vibin'
+			(check if user already registered in db>guild)?
+				(read data + update count) : enter data
+		
+		*/
+
+		const path= 'vibinScores/allEntries/1620057063896';
+		var dataPromise = readData(path);
+		dataPromise
+			.then((res)=>{
+				console.log('dataPromise function call returned');
+				return res;
+			})
+			.then(data=>{
+				console.log(data);
+			});
 	}
 	
     if (textMessage === "Vibecheck me".toLocaleLowerCase() ) {
@@ -366,7 +384,7 @@ function plTableCommandFunction(){
 		var printArray = [];
 		var printString = "";
 		var count =10;  // Max num of top teams to be displayed
-		
+
 		printArray.push('\tTeam\t\t\tPlayed | Pts')
 		for ( var i=0 ; i< count; i++){
 			printString = `${response.standings[0].table[i].position}:${response.standings[0].table[i].team.name}`;
@@ -394,7 +412,7 @@ var db = firebase.database();  // FIREBASE Database Function Definitions
 
 /*
     Reads data asynchronously with the 'path' argument specified. 
-    RETURNING A PROMISE.
+    RETURNING A PROMISE with the snapshot of the node specified.
     
     Ex path can be: /vibinScores/allEntries/112/
 */
@@ -403,15 +421,15 @@ function readData (path){
 
     return ref.once("value", function(snapshot) {
         // console.log('\n-----fetched data:\n');
-        console.log('\tReading: '+path);
+        console.log('\tReading @: '+path);
         console.log(snapshot.val());
         return snapshot.val();
     }, function (errorObject) {
         console.log("The read failed: " + errorObject.code);
-    })
-    .then( snap =>{
-            return snap.val();
-        })
+    }).then(res=>{
+		console.log('here');
+		return res.val();
+	})
 }
 
 
