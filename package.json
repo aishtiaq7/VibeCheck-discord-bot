@@ -19,6 +19,7 @@
   "homepage": "https://github.com/aishtiaq7/VibeCheck-discord-bot#readme",
   "dependencies": {
     "discord.js": "^12.5.1",
+    "dotenv": "^8.2.0",
     "firebase": "^8.4.2",
     "node-fetch": "^2.6.1"
   },
