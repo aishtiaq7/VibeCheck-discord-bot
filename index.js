@@ -55,17 +55,20 @@ client.once("ready", () => {
 	console.log('\n');
 
 
-	console.log('trigginer call...')
-	// client.on("message", "test");
+	var isTriggering = true;
+	if( isTriggering){
+		console.log('triggering call...')
+		//Emitting function
+		const channelId = "839029246567252000";
+		const sendMsg = 'test';
+		client.channels.fetch(channelId).then(channel => {
+			// console.log()("your message here");
+			channel.send(sendMsg);
+			console.log(`msg:\n{\t${sendMsg},\n\tsend to channelID:${channelId}\n}\n`);
+		})
+	
+	}
 
-	//   		==>> Error
-	const channelId = "839029246567252000";
-	const sendMsg = 'hello';
-	client.channels.fetch(channelId).then(channel => {
-		// console.log()("your message here");
-		channel.send(sendMsg);
-		console.log(`msg:${sendMsg}\nsend to channelID:${channelId}`);
-	})
 	
 
 });
@@ -147,18 +150,30 @@ client.on("message", message => { // runs whenever a message is sent
 	var textMessage = message.content;
 	textMessage = textMessage.toLowerCase();
 
-	// textMessage = 'test';	
-
 
 	if (textMessage === "test".toLocaleLowerCase()) {
 		console.log("Function call -  test ____!_ by:", message.author.username);
 		/*
 
-			== Read + Search;
-
+			== Write + Read + Search;
 		*/
 
+		/*
+			==>Write :
+				-Arrange the stuff you are gonna write to( reference == server, guild, , userID)
+		*/
 
+		//
+		// saveEachVibinScores( reference, childId, dataToWrite)
+
+
+
+
+
+
+
+		/*
+		===> Read
 		const path= 'vibinScores/allEntries/1620057063896';
 		var dataPromise = readData(path);
 		dataPromise
@@ -168,8 +183,8 @@ client.on("message", message => { // runs whenever a message is sent
 			})
 			.then(data=>{
 				console.log(data);
-			});
-
+			}); // <---- reading done.
+		*/
 
 
 	}
@@ -264,10 +279,11 @@ client.on("message", message => { // runs whenever a message is sent
 		if( vibecheckIsActive ){
 			registerVibecheck(message);
 			message.react('🤙🏾');
-			saveDataToFirebase(message);
+			registerEachVibinScore(message);
 		} else{
 			message.react('👎🏾');
 			console.log('vibin NOT registered');
+
 
 
 		}
@@ -334,7 +350,7 @@ function displayVibeCheckers(message){
 			}
 	}
 */
-function saveDataToFirebase(message) {
+function registerEachVibinScore(message) {
 	var currentDate = new Date();
 	var vibinScoreObj = {
 
@@ -441,7 +457,7 @@ function readData (path){
 
     return ref.once("value", function(snapshot) {
         // console.log('\n-----fetched data:\n');
-        console.log('\tReading @: '+path);
+        console.log('\n\tReading @: '+path);
         // console.log(snapshot.val());
         return snapshot.val();
     }, function (errorObject) {
@@ -478,7 +494,7 @@ function saveEachVibinScores( reference, childId, dataToWrite){
         reference = reference.toString();
     }
 
-	console.log('...writing to path:' + reference +' with dataToWrite:');
+	console.log('...writing to path:' + reference +'/' + childId +' \n...with dataToWrite:');
 	console.log(dataToWrite);
 
     var ref = db.ref(reference); //vibinScores

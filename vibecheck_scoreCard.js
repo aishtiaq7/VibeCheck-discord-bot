@@ -7,6 +7,7 @@ class Person{
         this.id = id;
         //id 
         //monthScore = ??
+        this.totalScore =0;
     }
 
     get Name() {
