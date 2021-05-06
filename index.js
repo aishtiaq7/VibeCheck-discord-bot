@@ -55,19 +55,14 @@ client.once("ready", () => {
 	console.log('\n');
 
 
-	var isTriggering = true;
-	if( isTriggering){
-		console.log('triggering call...')
-		//Emitting function
+	var isTrigger = false; 	//Do you wanna trigger? 
+	if(isTrigger){
+		const sendMsg = 'Different String';
 		const channelId = "839029246567252000";
-		const sendMsg = 'test';
-		client.channels.fetch(channelId).then(channel => {
-			// console.log()("your message here");
-			channel.send(sendMsg);
-			console.log(`msg:\n{\t${sendMsg},\n\tsend to channelID:${channelId}\n}\n`);
-		})
-	
+		sendMsgToChannel(sendMsg, channelId);
+
 	}
+	
 
 	
 
@@ -75,6 +70,16 @@ client.once("ready", () => {
 
 client.login(discord_token); // starts the bot up
 
+function  sendMsgToChannel(msg, id) {
+			
+	client.channels.fetch(id).then(channel => {
+		channel.send(msg);
+		// console.log(`msg:\n{\t${msg},\n\tsend to channelID:${id}\n}\n`);
+		console.log('msg', msg);
+		console.log('id:', id);
+	})
+	
+}
 
 var vibeCheckers =[];
 var vibecheckIsActive = false; // tracker for vibecheck window to allow ppl to vibecheck
@@ -152,42 +157,11 @@ client.on("message", message => { // runs whenever a message is sent
 
 
 	if (textMessage === "test".toLocaleLowerCase()) {
-		console.log("Function call -  test ____!_ by:", message.author.username);
-		/*
+    console.log("Function call -  test ____!_ by:", message.author.username);
+	
 
-			== Write + Read + Search;
-		*/
-
-		/*
-			==>Write :
-				-Arrange the stuff you are gonna write to( reference == server, guild, , userID)
-		*/
-
-		//
-		// saveEachVibinScores( reference, childId, dataToWrite)
-
-
-
-
-
-
-
-		/*
-		===> Read
-		const path= 'vibinScores/allEntries/1620057063896';
-		var dataPromise = readData(path);
-		dataPromise
-			.then((res)=>{
-				console.log('dataPromise function call returned');
-				return res;
-			})
-			.then(data=>{
-				console.log(data);
-			}); // <---- reading done.
-		*/
-
-
-	}
+	console.log('hello');
+  }
 
     if (textMessage === "Vibecheck me".toLocaleLowerCase() ) {
 
@@ -257,6 +231,7 @@ client.on("message", message => { // runs whenever a message is sent
 
 		start(); // starts clock
 
+		console.log('date', Date().toString)
 		setTimeout( ()=>{
 			vibecheckIsActive = false;
 			end();
