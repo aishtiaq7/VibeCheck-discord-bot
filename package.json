@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "startDev":"nodemon index.js"
+    "startDev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
   "dependencies": {
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
+    "fast-speedtest-api": "^0.3.2",
     "firebase": "^8.4.2",
     "node-fetch": "^2.6.1"
   },

@@ -3,7 +3,50 @@ const Discord = require("discord.js"); // imports the discord library
 const fs = require("fs"); // imports the file io library
 const client = new Discord.Client(); // creates a discord client
 
-let {Person} = require('./vibecheck_scoreCard.js') ; //Import other node modules:
+let { Person } = require("./vibecheck_scoreCard.js"); //Import other node modules:
+
+var vibeCheckers = [];
+var vibecheckIsActive = false; // tracker for vibecheck window to allow ppl to vibecheck
+
+var startTime, endTime;
+var timeDiff;
+
+var timeoutValueInMs = 12 * (60 * 1000); // window to responds to 'vibecheck @everyone'
+
+function start() {
+  startTime = new Date();
+}
+function elapsedTimeForScore() {
+  if (!vibecheckIsActive) {
+    return 0;
+  }
+  var timeSoFar = new Date();
+  var timeScore = timeSoFar - startTime;
+
+  timeScore /= 1000; //strip ms;
+  /*
+			mins to seconds
+			1s = 1000ms
+			1m = 60 x 1000ms
+			15m = 15 x ( 60 x 1000 )ms
+
+	*/
+  var score = Math.floor((1 - timeScore / (timeoutValueInMs / 1000)) * 100);
+
+  return score;
+}
+function end() {
+  endTime = new Date();
+  timeDiff = endTime - startTime; //in ms
+  // strip the ms
+  timeDiff /= 1000;
+
+  // get seconds
+  var seconds = Math.round(timeDiff);
+  console.log(seconds + " seconds window ran");
+
+}
+
 
 require('dotenv').config() // for hiding tokens and keys
 const discord_token = process.env.DISCORD_TOKEN; // discord token
@@ -55,7 +98,7 @@ client.once("ready", () => {
 	console.log('\n');
 
 
-	var isTrigger = false; 	//Do you wanna trigger? 
+	var isTrigger = false; 	//Do you wanna trigger??? 
 	if(isTrigger){
 		const sendMsg = 'Different String';
 		const channelId = "839029246567252000";
@@ -63,12 +106,34 @@ client.once("ready", () => {
 
 	}
 	
-
+	everyTrigger('time');
 	
 
 });
+const FastSpeedtest = require("fast-speedtest-api");
 
 client.login(discord_token); // starts the bot up
+
+function everyTrigger(msg) {
+	
+ 
+	let speedtest = new FastSpeedtest({
+		token: "YXNkZmFzZGxmbnNkYWZoYXNkZmhrYWxm", // required
+		verbose: false, // default: false
+		timeout: 10000, // default: 5000
+		https: true, // default: true
+		urlCount: 5, // default: 5
+		bufferSize: 8, // default: 8
+		unit: FastSpeedtest.UNITS.Mbps // default: Bps
+	});
+	 
+	speedtest.getSpeed().then(s => {
+		console.log(`Speed: ${s} Mbps`);
+	}).catch(e => {
+		console.error(e.message);
+	});
+	
+}
 
 function  sendMsgToChannel(msg, id) {
 			
@@ -79,72 +144,6 @@ function  sendMsgToChannel(msg, id) {
 		console.log('id:', id);
 	})
 	
-}
-
-var vibeCheckers =[];
-var vibecheckIsActive = false; // tracker for vibecheck window to allow ppl to vibecheck
-
-var startTime, endTime;
-var timeDiff;
-
-var timeoutValueInMs = 12 * ( 60 * 1000 ) ; // window to responds to 'vibecheck @everyone'
-
-function start() {
-	startTime = new Date();
-};
-
-function elapsedTimeForScore() {
-
-	if( !vibecheckIsActive){
-		return 0;
-	}
-	var timeSoFar = new Date();
-	var timeScore = timeSoFar - startTime;
-
-	timeScore /= 1000; //strip ms;
-	/*
-			mins to seconds
-			1s = 1000ms
-			1m = 60 x 1000ms
-			15m = 15 x ( 60 x 1000 )ms
-
-	*/
-	var score = Math.floor( (1 -(timeScore/ (timeoutValueInMs/1000)) ) *100 );
-
-	return score;
-}
-
-function end() {
-	endTime = new Date();
-	timeDiff = endTime - startTime; //in ms
-	// strip the ms
-	timeDiff /= 1000;
-
-	// get seconds
-	var seconds = Math.round(timeDiff);
-	console.log(seconds + " seconds window ran");
-
-
-	// // get seconds (Original had 'round' which incorrectly counts 0:28, 0:29, 1:30 ... 1:59, 1:0)
-	// var seconds = Math.round(timeDiff % 60);
-
-	// // remove seconds from the date
-	// timeDiff = Math.floor(timeDiff / 60);
-
-	// // get minutes
-	// var minutes = Math.round(timeDiff % 60);
-
-	// // remove minutes from the date
-	// timeDiff = Math.floor(timeDiff / 60);
-
-	// // get hours
-	// var hours = Math.round(timeDiff % 24);
-
-	// // remove hours from the date
-	// timeDiff = Math.floor(timeDiff / 24);
-
-	// // the rest of timeDiff is number of days
-	// var days = timeDiff ;
 }
 
 
