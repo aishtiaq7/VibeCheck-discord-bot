@@ -103,35 +103,38 @@ client.once("ready", () => {
 		const sendMsg = 'Different String';
 		const channelId = "839029246567252000";
 		sendMsgToChannel(sendMsg, channelId);
-
 	}
 	
-	everyTrigger('time');
+	// speedTestMbps().then(res=> console.log(res)); //Test net speed.
 	
 
 });
-const FastSpeedtest = require("fast-speedtest-api");
 
 client.login(discord_token); // starts the bot up
 
-function everyTrigger(msg) {
-	
- 
+
+const FastSpeedtest = require("fast-speedtest-api");
+//Returns float for Mbps
+//'timeout' miliseconds tests for how long the data download speed was tested.
+async function speedTestMbps(msg) {
+
 	let speedtest = new FastSpeedtest({
 		token: "YXNkZmFzZGxmbnNkYWZoYXNkZmhrYWxm", // required
 		verbose: false, // default: false
 		timeout: 10000, // default: 5000
 		https: true, // default: true
 		urlCount: 5, // default: 5
-		bufferSize: 8, // default: 8
+		bufferSize: 8, // default: 8 
 		unit: FastSpeedtest.UNITS.Mbps // default: Bps
 	});
-	 
-	speedtest.getSpeed().then(s => {
+
+	try {
+		const s = await speedtest.getSpeed();
 		console.log(`Speed: ${s} Mbps`);
-	}).catch(e => {
+		return s;
+	} catch (e) {
 		console.error(e.message);
-	});
+	}
 	
 }
 
