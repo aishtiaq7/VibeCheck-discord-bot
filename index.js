@@ -98,11 +98,19 @@ client.once("ready", () => {
 	console.log('\n');
 
 
-	var isTrigger = false; 	//Do you wanna trigger??? 
+	var isTrigger = false; 	//Trigger Once??? 
 	if(isTrigger){
-		const sendMsg = 'Different String';
-		const channelId = "839029246567252000";
+		isTrigger = false;
+		var sendMsg = `Eid Mubarak guys!!\nStay safe and keep vibin 🤙🏾 `;
+		const channelId = "810512883367936012";
 		sendMsgToChannel(sendMsg, channelId);
+		sendMsgToChannel('vibecheck @everyone', channelId);
+
+		/*			Reference to channels:
+		Robi's Server > spamming = 839029246567252000
+		Vibechek > no-smoking zone = 810512883367936012
+
+		*/
 	}
 	
 	// speedTestMbps().then(res=> console.log(res)); //Test net speed.
@@ -143,7 +151,7 @@ function  sendMsgToChannel(msg, id) {
 	client.channels.fetch(id).then(channel => {
 		channel.send(msg);
 		// console.log(`msg:\n{\t${msg},\n\tsend to channelID:${id}\n}\n`);
-		console.log('msg', msg);
+		console.log('msg:', msg);
 		console.log('id:', id);
 	})
 	
