@@ -234,7 +234,8 @@ client.on("message", message => { // runs whenever a message is sent
 
 	}
 
-	if ( textMessage === "Vibecheck @everyone".toLocaleLowerCase() ){
+	
+	if ( textMessage === "Vibecheck @everyone".toLocaleLowerCase() ){ 
 
 		console.log("vc @everyone - function call ______!_ by:", message.author.username)
 		vibecheckIsActive = true;
