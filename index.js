@@ -14,7 +14,7 @@ var timeDiff;
 var timeoutValueInMs = 12 * (60 * 1000); // window to responds to 'vibecheck @everyone'
 
 function start() {
-  startTime = new Date();
+	startTime = new Date();
 }
 function elapsedTimeForScore() {
   if (!vibecheckIsActive) {

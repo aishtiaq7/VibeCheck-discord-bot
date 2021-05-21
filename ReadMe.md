@@ -6,9 +6,8 @@
 * 'ucl' - Prints the upcoming UCL mathces in local time
 * 'pl table' - Prints the top 10 Premier League teams in the current league table
 
-TODO:
-* 
-
+# Other Integration: #
+* Firebase Realtime Database Integration as a Database
 
 # Screenshots # 
 * Vibecheck me - command
