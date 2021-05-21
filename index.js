@@ -53,7 +53,7 @@ const football_x_auth_token = process.env.FOOTBALL_X_AUTH_TOKEN // fetch api key
 
 //Firebase Tokens
 const fb_api_key = process.env.FIREBASE_API_KEY
-const fb_auth_domain = process.env.FIREBASE_AUTH_DOMAIN
+const fb_auth_domain = process.env.FIREBASE_AUTH_DOMAIN 
 const fb_database_url = process.env.FIREBASE_DATABAS_URL
 const fb_project_id= process.env.FIREBASE_PROJECT_ID
 const fb_storage_bucket= process.env.FIREBASE_STORAGE_BUCKET
