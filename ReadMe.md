@@ -7,7 +7,7 @@
 * 'pl table' - Prints the top 10 Premier League teams in the current league table
 
 # Other Integration: #
-* Firebase Realtime Database Integration as a Database
+* Firebase Realtime Database Integration
 
 # Screenshots # 
 * Vibecheck me - command
@@ -32,6 +32,12 @@
   <img src="./screenshots/pl table.PNG" width="350" >
 </p>
 
+## MIT LICENSE ##
+
+
+
+
 # TODO: #
 * Register total points for users in different servers (guilds)
 * Register playlist choices to play later.
+* Beautify readme.md with code snippets for the commands
