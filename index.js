@@ -17,33 +17,32 @@ function start() {
 	startTime = new Date();
 }
 function elapsedTimeForScore() {
-  if (!vibecheckIsActive) {
-    return 0;
-  }
-  var timeSoFar = new Date();
-  var timeScore = timeSoFar - startTime;
+	if (!vibecheckIsActive) {
+		return 0;
+	}
+	var timeSoFar = new Date();
+	var timeScore = timeSoFar - startTime;
 
-  timeScore /= 1000; //strip ms;
-  /*
-			mins to seconds
-			1s = 1000ms
-			1m = 60 x 1000ms
-			15m = 15 x ( 60 x 1000 )ms
+  	timeScore /= 1000; //strip ms;
+	/*
+		mins to seconds
+		1s = 1000ms
+		1m = 60 x 1000ms
+		15m = 15 x ( 60 x 1000 )ms
 
 	*/
-  var score = Math.floor((1 - timeScore / (timeoutValueInMs / 1000)) * 100);
-
-  return score;
+	var score = Math.floor((1 - timeScore / (timeoutValueInMs / 1000)) * 100);
+	return score;
 }
 function end() {
-  endTime = new Date();
-  timeDiff = endTime - startTime; //in ms
-  // strip the ms
-  timeDiff /= 1000;
+	endTime = new Date();
+  	timeDiff = endTime - startTime; //in ms
+  	// strip the ms
+	timeDiff /= 1000;
 
-  // get seconds
-  var seconds = Math.round(timeDiff);
-  console.log(seconds + " seconds window ran");
+	// get seconds
+	var seconds = Math.round(timeDiff);
+	console.log(seconds + " seconds window ran");
 
 }
 
