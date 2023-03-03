@@ -13,6 +13,8 @@ var timeDiff;
 
 var timeoutValueInMs = 12 * (60 * 1000); // window to responds to 'vibecheck @everyone'
 
+
+
 function start() {
 	startTime = new Date();
 }
@@ -52,31 +54,31 @@ const discord_token = process.env.DISCORD_TOKEN; // discord token
 const football_x_auth_token = process.env.FOOTBALL_X_AUTH_TOKEN // fetch api key
 
 //Firebase Tokens
-const fb_api_key = process.env.FIREBASE_API_KEY
-const fb_auth_domain = process.env.FIREBASE_AUTH_DOMAIN 
-const fb_database_url = process.env.FIREBASE_DATABAS_URL
-const fb_project_id= process.env.FIREBASE_PROJECT_ID
-const fb_storage_bucket= process.env.FIREBASE_STORAGE_BUCKET
-const fb_messaging_sender_id = process.env.FIREBASE_MESSAGING_SENDER_ID
-const fb_app_id = process.env.FIREBASE_APP_ID
-const fb_measurement_id= process.env.FIREBASE_MEASUREMENT_ID
+// const fb_api_key = process.env.FIREBASE_API_KEY
+// const fb_auth_domain = process.env.FIREBASE_AUTH_DOMAIN 
+// const fb_database_url = process.env.FIREBASE_DATABAS_URL
+// const fb_project_id= process.env.FIREBASE_PROJECT_ID
+// const fb_storage_bucket= process.env.FIREBASE_STORAGE_BUCKET
+// const fb_messaging_sender_id = process.env.FIREBASE_MESSAGING_SENDER_ID
+// const fb_app_id = process.env.FIREBASE_APP_ID
+// const fb_measurement_id= process.env.FIREBASE_MEASUREMENT_ID
 
 
 //---------------- FIREBASE ------------- : Function definition at the bottom
-var firebase = require('firebase');
-const { type } = require("os");
-const { send } = require("process");
-var firebaseConfig = {
-	apiKey: fb_api_key,
-    authDomain: fb_auth_domain,
-    databaseURL: fb_database_url,
-    projectId: fb_project_id,
-    storageBucket: fb_storage_bucket,
-    messagingSenderId: fb_messaging_sender_id,
-    appId: fb_app_id,
-    measurementId: fb_measurement_id
-};
-firebase.initializeApp(firebaseConfig);
+// var firebase = require('firebase');
+// const { type } = require("os");
+// const { send } = require("process");
+// var firebaseConfig = {
+// 	apiKey: fb_api_key,
+//     authDomain: fb_auth_domain,
+//     databaseURL: fb_database_url,
+//     projectId: fb_project_id,
+//     storageBucket: fb_storage_bucket,
+//     messagingSenderId: fb_messaging_sender_id,
+//     appId: fb_app_id,
+//     measurementId: fb_measurement_id
+// };
+// firebase.initializeApp(firebaseConfig);
 
 //----------------------------------------
 
@@ -173,6 +175,8 @@ client.on("message", message => { // runs whenever a message is sent
   }
 
     if (textMessage === "Vibecheck me".toLocaleLowerCase() ) {
+
+		console.log('DISCORD_TOKEN --> ',process.env.DISCORD_TOKEN);
 
 		console.log("Function call -  Vibecheck me ____!_ by:", message.author.username)
 		//Vibechecks wither username
@@ -423,7 +427,7 @@ function plTableCommandFunction(){
 }
 
 
-var db = firebase.database();  // FIREBASE Database Function Definitions
+// var db = firebase.database();  // FIREBASE Database Function Definitions
 
 /* **********************************************************
 						Firebase - READ
