@@ -1,27 +1,25 @@
-class Person{
+class Person {
+  constructor(name, score, id) {
+    this.name = name;
+    this.score = score;
 
-    constructor(name, score, id){
-        this.name = name;
-        this.score = score;
+    this.id = id;
+    //id
+    //monthScore = ??
+    this.totalScore = 0;
+  }
 
-        this.id = id;
-        //id 
-        //monthScore = ??
-        this.totalScore =0;
-    }
+  get Name() {
+    return this.name;
+  }
 
-    get Name() {
-        return this.name;
-    }
-    
-    get Score() {
-        return this.score;
-    }
+  get Score() {
+    return this.score;
+  }
 
-    get Id() {
-        return this.id;
-    }
+  get Id() {
+    return this.id;
+  }
 }
 
-// exporting looks different from Node.js but is almost as simple
- module.exports = {Person};
+module.exports = { Person };

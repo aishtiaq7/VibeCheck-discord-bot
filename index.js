@@ -1,17 +1,20 @@
 const fetch = require("node-fetch");
 const Discord = require("discord.js"); // imports the discord library
-const fs = require("fs"); // imports the file io library
 const client = new Discord.Client(); // creates a discord client
 
-let { Person } = require("./vibecheck_scoreCard.js"); //Import other node modules:
+require("dotenv").config(); // to preload the env values into process.env
+const discord_token = process.env.DISCORD_TOKEN; // discord token
+const football_x_auth_token = process.env.FOOTBALL_X_AUTH_TOKEN; // football-data.org token
+
+let { Person } = require("./vibecheck_scoreCard.js"); 
 
 var vibeCheckers = [];
-var vibecheckIsActive = false; // tracker for vibecheck window to allow ppl to vibecheck
+var vibecheckIsActive = false; // vibecheck everyone window
 
 var startTime, endTime;
 var timeDiff;
 
-var timeoutValueInMs = 1 * (60 * 1000); // window to responds to 'vibecheck @everyone' , in mins
+var timeoutValueInMs = 1 * (60 * 1000); // window to responds to 'vibecheck @everyone' 
 
 function start() {
   startTime = new Date();
@@ -45,9 +48,6 @@ function end() {
   console.log(seconds + " seconds window ran");
 }
 
-require("dotenv").config(); // to preload the env values into process.env
-const discord_token = process.env.DISCORD_TOKEN; // discord token
-const football_x_auth_token = process.env.FOOTBALL_X_AUTH_TOKEN; // fetch api key
 
 client.once("ready", () => {
   console.log("Ready!");
@@ -155,7 +155,6 @@ client.on("message", (message) => {
             matchString += changeTimeZone(element.utcDate);
             matchString += "\n";
             matchString += "\n";
-            // console.log(matchString);
           }
         });
 
@@ -201,11 +200,11 @@ client.on("message", (message) => {
   if (textMessage === "vibin".toLocaleLowerCase()) {
     console.log("vibin function call ______!_by:", message.author.username);
 
-    console.log("===vibin score:", elapsedTimeForScore());
     if (vibecheckIsActive) {
       registerVibecheck(message);
       message.react("🤙🏾");
       registerEachVibinScore(message);
+	  console.log("===vibin score:", elapsedTimeForScore());
     } else {
       message.react("👎🏾");
       console.log("vibin NOT registered");
@@ -213,9 +212,11 @@ client.on("message", (message) => {
   }
 });
 
-function changeTimeZone(dateToChange) {
-  //Changes time to BANGLADESH TIME
 
+// Helper Functions: 
+function changeTimeZone(dateToChange) {
+
+  //Converts to BD time
   const changeThisDate = new Date(dateToChange);
   const options = {
     // day: '2-digit', month: '2-digit', year: '2-digit',
@@ -233,8 +234,6 @@ function changeTimeZone(dateToChange) {
 }
 
 function uclFetchFunction() {
-  console.log("inside uclFetchFunciton");
-
   return fetch("https://api.football-data.org/v2/competitions/CL/matches", {
     headers: { "X-Auth-Token": football_x_auth_token },
     url: "https://api.football-data.org/v2/competitions/CL/matches",
