@@ -23,7 +23,8 @@
     "dotenv": "^8.2.0",
     "fast-speedtest-api": "^0.3.2",
     "firebase": "^8.4.2",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "openai": "^3.2.1"
   },
   "engines": {
     "node": "12.18.3",

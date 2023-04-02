@@ -6,7 +6,15 @@ require("dotenv").config(); // to preload the env values into process.env
 const discord_token = process.env.DISCORD_TOKEN; // discord token
 const football_x_auth_token = process.env.FOOTBALL_X_AUTH_TOKEN; // football-data.org token
 
-let { Person } = require("./vibecheck_scoreCard.js"); 
+let { Person } = require("./vibecheck_scoreCard.js");
+
+// Open AI
+const { Configuration, OpenAIApi } = require("openai");
+const configuration = new Configuration({
+  organization: process.env.ORGANIZATION_ID,
+  apiKey: process.env.OPEN_AI_API_KEY,
+});
+const openai = new OpenAIApi(configuration);
 
 var vibeCheckers = [];
 var vibecheckIsActive = false; // vibecheck everyone window
@@ -14,7 +22,7 @@ var vibecheckIsActive = false; // vibecheck everyone window
 var startTime, endTime;
 var timeDiff;
 
-var timeoutValueInMs = 1 * (60 * 1000); // window to responds to 'vibecheck @everyone' 
+var timeoutValueInMs = 1 * (60 * 1000); // window to responds to 'vibecheck @everyone'
 
 function start() {
   startTime = new Date();
@@ -40,14 +48,12 @@ function elapsedTimeForScore() {
 function end() {
   endTime = new Date();
   timeDiff = endTime - startTime; //in ms
-  // strip the ms
   timeDiff /= 1000;
 
   // get seconds
   var seconds = Math.round(timeDiff);
   console.log(seconds + " seconds window ran");
 }
-
 
 client.once("ready", () => {
   console.log("Ready!");
@@ -94,12 +100,51 @@ function sendMsgToChannel(msg, id) {
   });
 }
 
+async function handleChatGPTResponse(message, msg) {
+  
+  try {
+    if (msg == null) {
+      throw new Error("Uh oh, no prompt was provided");
+    }
+    // trigger OpenAI completion
+    console.log("msg:", msg);
+    const fakemsg = "what year is this chatgpt?";
+
+    await openai
+      .createCompletion({
+        model: "text-davinci-003",
+        // prompt: fakemsg,
+        prompt: "Say this is a test",
+        temperature: 0.9,
+        max_tokens: 250,
+        // top_p: 1,
+        // frequency_penalty: 0.0,
+        // presence_penalty: 0.6,
+        // stop: ["Human:", " AI:"],
+      })
+      .then((response) => {
+        console.log(response.data.choices[0].text);
+      })
+      .catch((err) => {
+        console.log('ERRR in catch block ->', err);
+      });
+  } catch (error) {
+    console.log("-->err in catch block below");
+    // console.log(error);
+  }
+  // message.channel.send(msg);
+  console.log("------end--");
+}
+
 //******************************** MESSAGES ********************************
 client.on("message", (message) => {
-	
   //message.content
   var textMessage = message.content;
   textMessage = textMessage.toLowerCase();
+
+  if (textMessage === "tst".toLocaleLowerCase()) {
+    handleChatGPTResponse(message, textMessage);
+  }
 
   if (textMessage === "test".toLocaleLowerCase()) {
     console.log("Function call -  test ____!_ by:", message.author.username);
@@ -169,7 +214,7 @@ client.on("message", (message) => {
       });
   }
 
-//   if (textMessage === "Vibecheck @everyone".toLocaleLowerCase()) {
+  //   if (textMessage === "Vibecheck @everyone".toLocaleLowerCase()) {
   if (textMessage === "vbe".toLocaleLowerCase()) {
     console.log(
       "vc @everyone - function call ______!_ by:",
@@ -204,7 +249,7 @@ client.on("message", (message) => {
       registerVibecheck(message);
       message.react("🤙🏾");
       registerEachVibinScore(message);
-	  console.log("===vibin score:", elapsedTimeForScore());
+      console.log("===vibin score:", elapsedTimeForScore());
     } else {
       message.react("👎🏾");
       console.log("vibin NOT registered");
@@ -212,10 +257,8 @@ client.on("message", (message) => {
   }
 });
 
-
-// Helper Functions: 
+// Helper Functions:
 function changeTimeZone(dateToChange) {
-
   //Converts to BD time
   const changeThisDate = new Date(dateToChange);
   const options = {
@@ -256,20 +299,7 @@ function displayVibeCheckers(message) {
   message.channel.send(replyString);
 }
 
-/*
-	Writes 'dataToWrite' json object to your 'reference' under 'childId' node.
 
-	Pattern example:
-	vibinScores{ // <---- reference
-			allEntries{
-				//123456: // <---- childID
-				{
-					...
-					..obj   <---- dataToWrite
-				}
-			}
-	}
-*/
 function registerEachVibinScore(message) {
   var currentDate = new Date();
   var vibinScoreObj = {
@@ -284,20 +314,9 @@ function registerEachVibinScore(message) {
     timeOfEntry: currentDate.toString(),
     vibinScore: elapsedTimeForScore(), //score
   };
-//   const path = "vibinScores/allEntries";
-//   saveEachVibinScores(path, currentDate.getTime(), vibinScoreObj);
 }
 
 function registerVibecheck(message) {
-  /*
-	Steps to follow:
-	-check if the time to vibecheck is still valid
-		if(valid){
-			push (username + score) to array
-		}
-	-When vibecheck time runs out
-		Pop the array to display the vibecheckers with score
-	*/
 
   const username = message.author.username.toString();
   var person1 = new Person(
@@ -347,77 +366,4 @@ function plTableCommandFunction() {
       }
       return printArray.join("\n");
     });
-}
-
-// var db = firebase.database();  // FIREBASE Database Function Definitions
-
-/* **********************************************************
-						Firebase - READ
-    **********************************************************
-*/
-
-/*
-    Reads data asynchronously with the 'path' argument specified.
-    RETURNING A PROMISE with the snapshot of the node specified.
-
-    Ex path can be: /vibinScores/allEntries/112/
-*/
-function readData(path) {
-  var ref = db.ref(path);
-
-  return ref
-    .once(
-      "value",
-      function (snapshot) {
-        // console.log('\n-----fetched data:\n');
-        console.log("\n\tReading @: " + path);
-        // console.log(snapshot.val());
-        return snapshot.val();
-      },
-      function (errorObject) {
-        console.log("The read failed: " + errorObject.code);
-      }
-    )
-    .then((res) => {
-      // console.log('returnig readData f.call');
-      return res.val();
-    });
-}
-
-/* **********************************************************
-						Firebase - Write
-    **********************************************************
-*/
-/*
-    Writes 'dataToWrite' json object to your 'reference' under 'childId' node.
-
-    Pattern example:
-    vibinScores{ // <---- reference
-            allEntries{
-                //123456: // <---- childID
-                {
-                    ...
-                    ..obj   <---- dataToWrite
-                }
-            }
-    }
-*/
-function saveEachVibinScores(reference, childId, dataToWrite) {
-  //convertes reference to string if not string
-  if (typeof reference != "string") {
-    reference = reference.toString();
-  }
-
-  console.log(
-    "...writing to path:" +
-      reference +
-      "/" +
-      childId +
-      " \n...with dataToWrite:"
-  );
-  console.log(dataToWrite);
-
-  var ref = db.ref(reference); //vibinScores
-  usersRef = ref.child(childId);
-  usersRef.set(dataToWrite);
 }
